@@ -24,35 +24,25 @@ class RunTSP:
                 line = f.readline()
                 line = line.rstrip()             
                 if line.startswith('NAME: '):
-                    #print "name"
                     tsp_name = line[6:]
                 elif line.startswith('TYPE: '):
-                    #print "type"
                     tsp_type = line[6:]
                 elif line.startswith('COMMENT: '):
-                    #print "comment"
                     tsp_comment = line[9:]
                 elif line.startswith('DIMENSION: '):
-                    #print "dim"
                     tsp_dim = int(line[11:])
                 elif line.startswith('EDGE_WEIGHT_TYPE: '):
-                    #print "ewt"
                     tsp_ewt = line[18:]
                 elif line.startswith('EDGE_WEIGHT_FORMAT: '):
-                    #print "ewf"
                     tsp_ewf = line[20:]
                 elif line.startswith('DISPLAY_DATA_TYPE: '):
-                    #print "ddt"
                     tsp_ddt = line[19:]
                 elif line.startswith('NODE_COORD_SECTION'):
                     yes = 0
-                    #start creating graph
                     for l in f:
-                        #print l
                         if l.startswith('EOF'):
                             break
                         else:
-                           # print "wtf"
                             data = list(map(lambda x: float(x), l.split()))
                             G.add_node(data[0], x_coord=data[1], y_coord=data[2])
                 else:
@@ -98,6 +88,5 @@ class RunTSP:
        
 
 if __name__ == '__main__':
-    # run the experiments
     runtsp = RunTSP()
     runtsp.main()
