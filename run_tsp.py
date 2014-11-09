@@ -46,13 +46,10 @@ class RunTSP:
                     tsp_ddt = line[19:]
                 elif line.startswith('NODE_COORD_SECTION'):
                     yes = 0
-                    #f.readline()
-                    #print "ncs"
                     #start creating graph
                     for l in f:
                         #print l
                         if l.startswith('EOF'):
-                           # print "why dont i break"
                             break
                         else:
                            # print "wtf"
