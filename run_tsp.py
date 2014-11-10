@@ -6,7 +6,7 @@ import os
 import sys
 import math
 
-
+import nearestneighbor as nn
 
 
 class RunTSP:
@@ -41,14 +41,16 @@ class RunTSP:
                     yes = 0
                     for l in f:
                         if l.startswith('EOF'):
-                            break
+                        	print "um"
+                        	break
                         else:
-                            data = list(map(lambda x: float(x), l.split()))
-                            G.add_node(data[0], x_coord=data[1], y_coord=data[2])
+                        	#print l
+                        	data = list(map(lambda x: float(x), l.split()))
+                        	G.add_node(data[0], x_coord=data[1], y_coord=data[2])
                 else:
                     print "HALP"
         f.close()
-
+        print tsp_ewt + "HAI"
         #add the edges (need edge between every pair of nodes)
         for u in G.nodes():
             for v in G.nodes():
@@ -63,7 +65,7 @@ class RunTSP:
                         q1 = math.cos(long_u - long_v)
                         q2 = math.cos(lat_u - lat_v)
                         q3 = math.cos(lat_u + lat_v)
-                        G.add_edge(u,v, weight=round(6378.388*math.acos(.5*((1+q1)*q2 - (1-q1)*q3))+1))
+                        G.add_edge(u,v, weight=(int)(6378.388*math.acos(.5*((1.0+q1)*q2 - (1.0-q1)*q3))+1.0))
         return G
 
     def lat_long(self, G, num):
@@ -79,13 +81,14 @@ class RunTSP:
     def main(self):
 
         filename = sys.argv[1]
-        cutoff_time = sys.argv[2]
-        algorithm = sys.argv[3]
-        random_seed = sys.argv[4]
+        #cutoff_time = sys.argv[2]
+        #algorithm = sys.argv[3]
+        #random_seed = sys.argv[4]
 
         G = self.create_graph(filename)
-
-       
+        nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
+        print nn_cost
+        print nn_tour
 
 if __name__ == '__main__':
     runtsp = RunTSP()
