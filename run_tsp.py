@@ -41,7 +41,6 @@ class RunTSP:
                     yes = 0
                     for l in f:
                         if l.startswith('EOF'):
-                        	print "um"
                         	break
                         else:
                         	#print l
@@ -50,7 +49,8 @@ class RunTSP:
                 else:
                     print "HALP"
         f.close()
-        print tsp_ewt + "HAI"
+        print tsp_ewt
+
         #add the edges (need edge between every pair of nodes)
         for u in G.nodes():
             for v in G.nodes():
@@ -89,6 +89,16 @@ class RunTSP:
         nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
         print nn_cost
         print nn_tour
+        #print "\n"
+        #inorder_tour = nn.inordertour(G) #in order tour
+        #print inorder_tour
+        #print "\n"
+        #back_tour = nn.backwardstour(G) #reverse tour
+        #print back_tour
+        #rand_tour = nn.randtour(G) #random tour
+        #print rand_tour
+        #omg = nn.ugh(G)
+        #print omg
 
 if __name__ == '__main__':
     runtsp = RunTSP()
