@@ -1,6 +1,8 @@
 import copy
+import time
 
-def bbtour(G):
+def bbtour(G, cutoff_time):
+	start_time = time.time()
 	nodes = G.nodes()
 	F = [] #list of solutions (a partial solution is a list?)
 	#best_cost = find_cost(nodes, G)
@@ -17,6 +19,8 @@ def bbtour(G):
 
 	#print "F: "+str(F)
 	while F:
+		if (time.time() - start_time)/60 >= cutoff_time:
+			return best_soln, best_cost
 		#choose partial soln in F to expand by lower bound (and remove from F)
 		#expand 
 		#for each new config
@@ -29,16 +33,19 @@ def bbtour(G):
 		new_configs = expand(partial_soln, G) #what happens when i return an empty list
 		#print "new configs: " + str(new_configs)
 		for config in new_configs:
+			if (time.time() - start_time)/60 >= cutoff_time:
+				return best_soln, best_cost
 			#'check' new config
 			is_soln = check(config, G)
 			if is_soln == 1:
 				temp = find_cost(config, G)
-				print "before temp cost: " + str(temp) + ", best cost: " + str(best_cost)
+				#print "before temp cost: " + str(temp) + ", best cost: " + str(best_cost)
 				if temp < best_cost:
-					best_soln = config
+					best_soln = copy.deepcopy(config)
+					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
-				print "after temp cost: " + str(temp) + ", best cost: " + str(best_cost)
-				#print "best cost is " + str(best_cost) + " and soln is " + str(best_soln)
+				#print "after temp cost: " + str(temp) + ", best cost: " + str(best_cost)
+				print "best cost is " + str(best_cost) + "and F is " + str(F)#+ " and soln is " + str(best_soln)
 				#assert(False)
 				#print "heyyyy " + str(best_cost)
 			else:
@@ -103,45 +110,73 @@ def choose(F, G):
 	#print "in choose: " + str(best)
 	return best
 
-#return lower bound on particular soln if soln is path from a-->T-->b
-#lb = (length of path from a-->b) + (sum of min cost of leaving each vertex in V-T-a)
 def lower_bound(soln, G):
-	a = soln[0]
-	b = soln[-1]
-	T = copy.deepcopy(soln)
-	
-	T.remove(a)
-
-	if T!=[]:
-		T.remove(b)
-	
-	#print "T: " + str(T) + ", a: " + str(a) + ", b: " + str(b)
-
-	nodes = G.nodes()
+	count = 0
+	path = 0
 	all_nodes = G.nodes()
 
-	path = 0
-	count = 0
+
+
 	for node in soln:
+		all_nodes.remove(node)
 		if count == 0:
-			i = node
 			count = 1
+			i = node
 		else:
 			path += G.edge[i][node]['weight']
-			i=node
+			i = node
+	all_nodes.append(soln[-1])
 
-	for node in T:
-		nodes.remove(node)
-	nodes.remove(a) #now nodes contains V-T-a
+	G_nodes = copy.deepcopy(all_nodes)
 
-	#find sum of min cost of leaving each vertex in V-T-a ('nodes')
-	for node in nodes:
-		#for each of these nodes find min cost of leaving it
-		all_nodes.remove(node)
-		min_node = min(all_nodes, key = lambda u: G.edge[node][u]['weight']) #should this be min cost leaving vertex to ALL other nodes, or only nodes in V-T-a?
-		all_nodes.append(node)
+	for node in all_nodes:
+		G_nodes.remove(node)
+		min_node = min(G_nodes, key = lambda u: G.edge[node][u]['weight'])
 		path += G.edge[node][min_node]['weight']
+		G_nodes.append(node)
+
 	return path
+
+
+#return lower bound on particular soln if soln is path from a-->T-->b
+#lb = (length of path from a-->b) + (sum of min cost of leaving each vertex in V-T-a)
+#def lower_bound(soln, G):
+#	a = soln[0]
+#	b = soln[-1]
+#	T = copy.deepcopy(soln)
+#	
+#	T.remove(a)
+#
+#	if T!=[]:
+#		T.remove(b)
+#	
+#	#print "T: " + str(T) + ", a: " + str(a) + ", b: " + str(b)
+#
+#	nodes = G.nodes()
+#	all_nodes = G.nodes()
+#
+#	path = 0
+#	count = 0
+#	for node in soln:
+#		if count == 0:
+#			i = node
+#			count = 1
+#		else:
+#			path += G.edge[i][node]['weight']
+#			i=node
+#
+#	for node in T:
+#		nodes.remove(node)
+#	nodes.remove(a) #now nodes contains V-T-a
+#
+#	#find sum of min cost of leaving each vertex in V-T-a ('nodes')
+#	for node in nodes:
+#		#for each of these nodes find min cost of leaving it
+#		all_nodes.remove(node)
+#		min_node = min(all_nodes, key = lambda u: G.edge[node][u]['weight']) #should this be min cost leaving vertex to ALL other nodes, or only nodes in V-T-a?
+#		all_nodes.append(node)
+#		path += G.edge[node][min_node]['weight']
+#	return path
 
 
 #expands given config, randomly add vertex?

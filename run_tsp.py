@@ -5,7 +5,7 @@ import time
 import os
 import sys
 import math
-
+import itertools
 import nearestneighbor as nn
 import branchandbound as bb
 
@@ -78,6 +78,9 @@ class RunTSP:
         longitude = pi * (deg + 5.0 * min/3.0) / 180
         return latitude,longitude
 
+   # def testing(self, G):
+
+
     def main(self):
 
         filename = sys.argv[1]
@@ -86,13 +89,18 @@ class RunTSP:
         #random_seed = sys.argv[4]
 
         G = self.create_graph(filename)
-        #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
-        #print nn_cost
-        #print nn_tour
+        nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
+        print nn_cost
+        print nn_tour
 
-        bb_tour,bb_cost = bb.bbtour(G) #branch and bound
-        print bb_cost
-        print bb_tour
+        cutoff_time = float("inf") #in minutes
+
+        bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+        if bb_tour is None:
+            print "give me more time yo"
+        else:
+            print bb_cost
+            print bb_tour
 
 if __name__ == '__main__':
     runtsp = RunTSP()
