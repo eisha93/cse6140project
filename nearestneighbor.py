@@ -33,6 +33,7 @@ def nntour(G):
 			not_visited.remove(min_node)
 			assert(min_node not in not_visited)
 		tour += G.edge[visited[-1]][visited[0]]['weight']
+		visited.append(visited[0]) #make it a cycle????
 
 		dict[tour] = visited
 	#print dict

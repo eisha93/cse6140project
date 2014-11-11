@@ -7,7 +7,7 @@ import sys
 import math
 
 import nearestneighbor as nn
-
+import branchandbound as bb
 
 class RunTSP:
     def create_graph(self, filename):
@@ -49,7 +49,7 @@ class RunTSP:
                 else:
                     print "HALP"
         f.close()
-        print tsp_ewt
+        
 
         #add the edges (need edge between every pair of nodes)
         for u in G.nodes():
@@ -86,19 +86,13 @@ class RunTSP:
         #random_seed = sys.argv[4]
 
         G = self.create_graph(filename)
-        nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
-        print nn_cost
-        print nn_tour
-        #print "\n"
-        #inorder_tour = nn.inordertour(G) #in order tour
-        #print inorder_tour
-        #print "\n"
-        #back_tour = nn.backwardstour(G) #reverse tour
-        #print back_tour
-        #rand_tour = nn.randtour(G) #random tour
-        #print rand_tour
-        #omg = nn.ugh(G)
-        #print omg
+        #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
+        #print nn_cost
+        #print nn_tour
+
+        bb_tour,bb_cost = bb.bbtour(G) #branch and bound
+        print bb_cost
+        print bb_tour
 
 if __name__ == '__main__':
     runtsp = RunTSP()
