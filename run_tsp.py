@@ -58,27 +58,36 @@ class RunTSP:
                     if tsp_ewt == 'EUC_2D':
                         xd = G.node[u]['x_coord'] - G.node[v]['x_coord']
                         yd = G.node[u]['y_coord'] - G.node[v]['y_coord']
-                        G.add_edge(u,v, weight=round(math.sqrt(xd*xd + yd*yd)))
+                        G.add_edge(u,v, weight=(int)(math.sqrt(xd*xd + yd*yd)))
                     elif tsp_ewt == 'GEO':
                         lat_u,long_u = self.lat_long(G, u)
                         lat_v,long_v = self.lat_long(G, v)
                         q1 = math.cos(long_u - long_v)
                         q2 = math.cos(lat_u - lat_v)
                         q3 = math.cos(lat_u + lat_v)
-                        G.add_edge(u,v, weight=(int)(6378.388*math.acos(.5*((1.0+q1)*q2 - (1.0-q1)*q3))+1.0))
+                        G.add_edge(u,v, weight=(int)((6378.388*math.acos(.5*((1.0+q1)*q2 - (1.0-q1)*q3))+1.0)))
         return G
 
     def lat_long(self, G, num):
         pi = 3.141592
-        deg = round(G.node[num]['x_coord'])
+        deg = (int)(G.node[num]['x_coord'])
         min = G.node[num]['x_coord'] - deg
-        latitude = pi * (deg + 5.0 * min/3.0) / 180
-        deg = round(G.node[num]['y_coord'])
+        latitude = pi * (deg + 5.0 * min/3.0) / 180.0
+        deg = (int)(G.node[num]['y_coord'])
         min = G.node[num]['y_coord'] - deg
-        longitude = pi * (deg + 5.0 * min/3.0) / 180
+        longitude = pi * (deg + 5.0 * min/3.0) / 180.0
         return latitude,longitude
 
-   # def testing(self, G):
+    def testing(self, G):
+        p = itertools.permutations(G.nodes())
+        for x in p:
+            temp = bb.find_cost(x,G)
+            if temp == 3323:
+                print "YES " + str(temp)
+                break
+            elif temp == 3454:
+                print "eh "
+
 
 
     def main(self):
@@ -89,9 +98,9 @@ class RunTSP:
         #random_seed = sys.argv[4]
 
         G = self.create_graph(filename)
-        nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
-        print nn_cost
-        print nn_tour
+        #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
+        #print nn_cost
+        #print nn_tour
 
         cutoff_time = float("inf") #in minutes
 
@@ -101,6 +110,8 @@ class RunTSP:
         else:
             print bb_cost
             print bb_tour
+        #self.testing(G)
+
 
 if __name__ == '__main__':
     runtsp = RunTSP()

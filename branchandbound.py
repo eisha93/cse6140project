@@ -26,10 +26,11 @@ def bbtour(G, cutoff_time):
 		#for each new config
 			#check new config, if soln then update best appropriately
 			#else add new config to F
+		#print "before choose"
 		partial_soln = choose(F, G)
 		#print "partial soln: " + str(partial_soln)
 		F.remove(partial_soln)
-
+		#print "before expand"
 		new_configs = expand(partial_soln, G) #what happens when i return an empty list
 		#print "new configs: " + str(new_configs)
 		for config in new_configs:
@@ -38,6 +39,7 @@ def bbtour(G, cutoff_time):
 			#'check' new config
 			is_soln = check(config, G)
 			if is_soln == 1:
+				#return ["BLAH"],-1
 				temp = find_cost(config, G)
 				#print "before temp cost: " + str(temp) + ", best cost: " + str(best_cost)
 				if temp < best_cost:
@@ -45,11 +47,12 @@ def bbtour(G, cutoff_time):
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
 				#print "after temp cost: " + str(temp) + ", best cost: " + str(best_cost)
-				print "best cost is " + str(best_cost) + "and F is " + str(F)#+ " and soln is " + str(best_soln)
+				print "best cost is " + str(best_cost) + " and soln is " + str(best_soln)
 				#assert(False)
 				#print "heyyyy " + str(best_cost)
 			else:
 				if lower_bound(config, G) < best_cost:
+					#print "F: " + str(F)
 					F.append(config)
 	return best_soln, best_cost
 
