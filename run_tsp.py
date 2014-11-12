@@ -58,7 +58,7 @@ class RunTSP:
                     if tsp_ewt == 'EUC_2D':
                         xd = G.node[u]['x_coord'] - G.node[v]['x_coord']
                         yd = G.node[u]['y_coord'] - G.node[v]['y_coord']
-                        G.add_edge(u,v, weight=(int)(math.sqrt(xd*xd + yd*yd)))
+                        G.add_edge(u,v, weight=(int)(math.sqrt(xd*xd + yd*yd))) #should this be round() or (int)
                     elif tsp_ewt == 'GEO':
                         lat_u,long_u = self.lat_long(G, u)
                         lat_v,long_v = self.lat_long(G, v)
