@@ -1,8 +1,6 @@
 import itertools
 from random import randint
 
-TEST
-
 #s = random vertex v
 #while not all vertices visited
 	#select closest unvisited neighbor
