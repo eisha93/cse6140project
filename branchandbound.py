@@ -1,9 +1,10 @@
 import copy
 import time
+import numpy as np
 
 def bbtour(G, cutoff_time):
 	start_time = time.time()
-	nodes = G.nodes()
+	nodes = list(np.random.permutation(G.nodes()))
 	F = [] #list of solutions (a partial solution is a list?)
 	#best_cost = find_cost(nodes, G)
 	#best_soln = copy.deepcopy(nodes)

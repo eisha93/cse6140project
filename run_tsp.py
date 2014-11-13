@@ -113,9 +113,9 @@ class RunTSP:
         #    print bb_tour
         #self.testing(G)
 
-        hc_tour,hc_cost = hc.hillclimb_restart(G) #hill climbing
-        print hc_tour #HAHAH DO YOU ACTUALLY WORK
-        print hc_cost
+        #hc_tour,hc_cost = hc.hctour(G) #hill climbing
+        #print hc_tour #HAHAH DO YOU ACTUALLY WORK
+        #print hc_cost
 
 if __name__ == '__main__':
     runtsp = RunTSP()

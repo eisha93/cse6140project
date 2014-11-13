@@ -10,6 +10,7 @@ def hillclimb(G):
 	iterations = 0
 
 	while iterations<maxIter:
+		print iterations
 		#print "huh2 " + str(curr_soln)
 		temp_cost, next_soln = find_next_soln(curr_soln, G) #find the best of its neighborhood... so if this cost is less than current optimal we have reached the peak.. is this correct
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
@@ -72,7 +73,7 @@ def find_successors(curr_soln, G):
 	return successors
 
 
-def hillclimb_restart(G):
+def hctour(G):
 	num_iter = 5
 	iterations = 0
 
