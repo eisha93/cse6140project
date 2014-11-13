@@ -94,23 +94,27 @@ class RunTSP:
     def main(self):
 
         filename = sys.argv[1]
-        #cutoff_time = sys.argv[2]
+        cutoff_time = int(sys.argv[2])
         #algorithm = sys.argv[3]
         #random_seed = sys.argv[4]
 
         G = self.create_graph(filename)
+
+
+
         #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
         #print nn_cost
         #print nn_tour
 
         cutoff_time = float("inf") #in minutes
 
-        #bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
-        #if bb_tour is None:
-        #    print "give me more time yo"
-        #else:
-        #    print bb_cost
-        #    print bb_tour
+        #i hate you
+        bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+        if bb_tour is None:
+            print "give me more time yo"
+        else:
+            print bb_cost
+            print bb_tour
         #self.testing(G)
 
         #hc_tour,hc_cost = hc.hctour(G) #hill climbing

@@ -18,6 +18,8 @@ def bbtour(G, cutoff_time):
 	for node in nodes:
 		F.append([node])
 
+	first = 1
+	rest = 0
 	#print "F: "+str(F)
 	while F:
 		if (time.time() - start_time)/60 >= cutoff_time:
@@ -27,30 +29,39 @@ def bbtour(G, cutoff_time):
 		#for each new config
 			#check new config, if soln then update best appropriately
 			#else add new config to F
-		#print "before choose"
-		partial_soln = choose(F, G)
-		#print "partial soln: " + str(partial_soln)
+		
+		#let's try where the first expand picks the "best" out of all the singletons...
+
+		if first == 1:
+			#call choose_lowerbound --> picks partial based off of lower bound
+			partial_soln = choose_lowerbound(F,G)
+			if rest == 0:
+				first = 0
+		else:
+			#call the choose that picks longest partial soln... 
+			partial_soln = choose(F, G)
+		
 		F.remove(partial_soln)
-		#print "before expand"
-		new_configs = expand(partial_soln, G) #what happens when i return an empty list
-		#print "new configs: " + str(new_configs)
+
+		new_configs = expand(partial_soln, G) #do I ever return an empty list
+		
 		for config in new_configs:
 			if (time.time() - start_time)/60 >= cutoff_time:
 				return best_soln, best_cost
 			#'check' new config
 			is_soln = check(config, G)
 			if is_soln == 1:
-				#return ["BLAH"],-1
+				first = 1
+				#rest = 1
 				temp = find_cost(config, G)
-				#print "before temp cost: " + str(temp) + ", best cost: " + str(best_cost)
+				
 				if temp < best_cost:
 					best_soln = copy.deepcopy(config)
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
-				#print "after temp cost: " + str(temp) + ", best cost: " + str(best_cost)
+				
 				print "best cost is " + str(best_cost) + " and soln is " + str(best_soln)
-				#assert(False)
-				#print "heyyyy " + str(best_cost)
+				
 			else:
 				if lower_bound(config, G) < best_cost:
 					#print "F: " + str(F)
@@ -82,8 +93,7 @@ def check(config, G):
 	return 1
 
 
-#choose best config in list of partial solns based off of partial solns in F
-def choose(F, G):
+def choose_lowerbound(F, G):
 	best = None
 	#print "F choose: " + str(F)
 	cost = float("inf")
@@ -92,12 +102,44 @@ def choose(F, G):
 		#print "soln: " + str(soln)
 		temp = lower_bound(soln, G)
 		#print "soln2"  + str(soln)
+		#if best == None:
+		#	lenbest = 0
+		#else:
+		#	lenbest = len(best)
+		#if len(soln) > lenbest:
+		#		cost = temp
+		#		best = soln
+
+		if temp<=cost:
+			if temp == cost: 
+				#if the lower bounds are ==, pick the one with more nodes (more likely to get a solution faster)
+				if best!=None:
+					if len(soln) > len(best):
+						cost = temp
+						best = soln
+			else:
+				cost = temp
+				best = soln
+		
+	#print "in choose: " + str(best)
+	return best
+
+#choose best config in list of partial solns based off of partial solns in F
+def choose(F, G):
+	best = None
+	#print "F choose: " + str(F)
+	cost = float("inf")
+
+	for soln in F:
+		#print "soln: " + str(soln)
+		#temp = lower_bound(soln, G)
+		#print "soln2"  + str(soln)
 		if best == None:
 			lenbest = 0
 		else:
 			lenbest = len(best)
 		if len(soln) > lenbest:
-				cost = temp
+				#cost = temp
 				best = soln
 
 		#if temp<=cost:
@@ -187,7 +229,7 @@ def lower_bound(soln, G):
 def expand(config, G):
 	temp_config = copy.deepcopy(config)
 	new_configs = []
-	nodes = G.nodes()
+	nodes = list(np.random.permutation(G.nodes()))
 	#print "in expand config is " + str(temp_config)
 	#first remove all the nodes that are in the partial soln
 	for node in temp_config:

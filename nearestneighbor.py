@@ -12,7 +12,7 @@ from random import randint
 #as in, start at each node and find its nn tour and then find the min of all of those...?
 def nntour(G):
 
-	#why don't you work
+	#why don't you work OH BUT YOU DO
 
 	dict = {}
 	for node in G.nodes():
@@ -32,7 +32,7 @@ def nntour(G):
 			assert(min_node in visited)
 			not_visited.remove(min_node)
 			assert(min_node not in not_visited)
-		tour += G.edge[visited[-1]][visited[0]]['weight']
+		tour += G.edge[visited[-1]][visited[0]]['weight'] #add the cost to get back to the beginning cuz its a cycleeee
 		visited.append(visited[0]) #make it a cycle????
 
 		dict[tour] = visited
