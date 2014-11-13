@@ -6,9 +6,9 @@ import os
 import sys
 import math
 import itertools
-import nearestneighbor as nn
-import branchandbound as bb
-import hillclimbing as hc
+import nearestNeighbor as nn
+import branchAndBound as bb
+import hillClimbing as hc
 
 class RunTSP:
     def create_graph(self, filename):

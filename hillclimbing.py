@@ -1,5 +1,5 @@
 import numpy as np
-import branchandbound as bb
+import branchAndBound as bb
 import copy
 
 def hillclimb(G):
