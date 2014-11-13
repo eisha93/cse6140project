@@ -12,10 +12,7 @@ import hillclimbing as hc
 
 class RunTSP:
     def create_graph(self, filename):
-        """
-        Reads the graph from the given file and returns the graph object
-        as a networkx graph.
-        """
+
         # init graph
         G = nx.Graph()
 
