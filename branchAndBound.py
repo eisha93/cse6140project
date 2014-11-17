@@ -1,21 +1,37 @@
 import copy
 import time
 import numpy as np
+import nearestNeighbor as nn
+import networkx as nx
 
 def bbtour(G, cutoff_time):
 	start_time = time.time()
-	nodes = list(np.random.permutation(G.nodes()))
+	i=0
+	#best = list(np.random.permutation(G.nodes()))
+	#bcost = find_cost(best,G)
+	#while i<50:
+#		nodes = list(np.random.permutation(G.nodes()))
+#		ncost = find_cost(nodes,G)
+#		if ncost<bcost:
+#			best = nodes
+#			bcost = ncost
+#		i+=1
 	F = [] #list of solutions (a partial solution is a list?)
 	#best_cost = find_cost(nodes, G)
 	#best_soln = copy.deepcopy(nodes)
 	#best_soln.append(nodes[0]) #make it a cycle?
-	best_cost = float("inf")
-	best_soln = None
-	print best_cost
+	#best_cost = find_cost(nodes,G)
+	#best_soln = copy.deepcopy(nodes)
+	#best_soln.append(best_soln[0])
+	
+	best_soln, best_cost = nn.nntour(G)
 
+	print best_soln
+	print best_cost
+	#return -1
 	#add each node as a "partial" solution to F? as in you want to look at all possible
 	#solns for all possible nodes right?
-	for node in nodes:
+	for node in G.nodes():
 		F.append([node])
 
 	first = 1
@@ -32,15 +48,17 @@ def bbtour(G, cutoff_time):
 		
 		#let's try where the first expand picks the "best" out of all the singletons...
 
-		if first == 1:
+		#if first == 1:
 			#call choose_lowerbound --> picks partial based off of lower bound
-			partial_soln = choose_lowerbound(F,G)
-			if rest == 0:
-				first = 0
-		else:
+		#	partial_soln = choose(F,G) #choose_lowerbound
+		#	if rest == 0:
+		#		first = 0
+		#lse:
 			#call the choose that picks longest partial soln... 
-			partial_soln = choose(F, G)
+		#	partial_soln = choose(F, G)
 		
+		partial_soln = choose_lowerbound(F,G)
+		#print "WTF " + str(partial_soln)
 		F.remove(partial_soln)
 
 		new_configs = expand(partial_soln, G) #do I ever return an empty list
@@ -61,11 +79,17 @@ def bbtour(G, cutoff_time):
 					best_cost = temp #make it a cycle
 				
 				print "best cost is " + str(best_cost) + " and soln is " + str(best_soln)
-				
+				#return best_soln, best_cost
 			else:
 				if lower_bound(config, G) < best_cost:
 					#print "F: " + str(F)
 					F.append(config)
+					print "lb is " + str(lower_bound(config, G)) + " config is " + str(config)
+				else:
+					print best_soln
+					print best_cost
+					#return -1
+					print "pruned"
 	return best_soln, best_cost
 
 def find_cost(config, G):
@@ -99,8 +123,10 @@ def choose_lowerbound(F, G):
 	cost = float("inf")
 
 	for soln in F:
+		#print "lol"
 		#print "soln: " + str(soln)
 		temp = lower_bound(soln, G)
+		#print str(temp) + "kill me"
 		#print "soln2"  + str(soln)
 		#if best == None:
 		#	lenbest = 0
@@ -110,16 +136,17 @@ def choose_lowerbound(F, G):
 		#		cost = temp
 		#		best = soln
 
-		if temp<=cost:
-			if temp == cost: 
+		if temp<cost:
+			#print str(soln) + " LOL"
+			cost = temp
+			best = soln
+			#if temp == cost: 
 				#if the lower bounds are ==, pick the one with more nodes (more likely to get a solution faster)
-				if best!=None:
-					if len(soln) > len(best):
-						cost = temp
-						best = soln
-			else:
-				cost = temp
-				best = soln
+			#	if best!=None:
+			#		if len(soln) > len(best):
+			#else:
+			#	cost = temp
+			#	best = soln
 		
 	#print "in choose: " + str(best)
 	return best
@@ -156,11 +183,10 @@ def choose(F, G):
 	#print "in choose: " + str(best)
 	return best
 
-def lower_bound(soln, G):
+def lower_bound_easy(soln, G):
 	count = 0
 	path = 0
 	all_nodes = G.nodes()
-
 
 
 	for node in soln:
@@ -180,6 +206,90 @@ def lower_bound(soln, G):
 		min_node = min(G_nodes, key = lambda u: G.edge[node][u]['weight'])
 		path += G.edge[node][min_node]['weight']
 		G_nodes.append(node)
+
+	return path
+
+def lower_bound(soln, G):
+	count = 0
+	path = 0
+	all_nodes = G.nodes()
+	G_nodes = G.nodes()
+	#lower bound = partial path we have
+	for node in soln:
+		all_nodes.remove(node)
+		G_nodes.remove(node)
+		if count == 0:
+			count = 1
+			i = node
+			#call choose_lowe
+		else:
+			path += G.edge[i][node]['weight']
+			i = node
+
+	#lower bound += exiting a and b	
+	#min edge leaving a, to node in V-soln
+	min_a = min(all_nodes, key=lambda u: G.edge[soln[0]][u]['weight'])
+
+	#min edge leaving b
+	min_b = min(all_nodes, key=lambda u: G.edge[soln[-1]][u]['weight'])
+
+	exit_a = G.edge[soln[0]][min_a]['weight']
+	exit_b = G.edge[soln[-1]][min_b]['weight']
+
+	path += 1*(exit_a + exit_b) #lb is now partial soln + lower bound on exiting a and b
+
+	#so all_nodes is now V-soln, find minimum spanning tree of those
+	subgraph = G.subgraph(all_nodes)
+	mst = nx.minimum_spanning_tree(subgraph)
+
+	for gedge in mst.edges():
+		path += G.edge[gedge[0]][gedge[1]]['weight']	
+
+	return path
+
+
+def lower_bound_take2(soln, G):
+	count = 0
+	path = 0
+	all_nodes = G.nodes()
+	G_nodes = G.nodes()
+	#lower bound = partial path we have
+	for node in soln:
+		all_nodes.remove(node)
+		G_nodes.remove(node)
+		if count == 0:
+			count = 1
+			i = node
+		else:
+			path += G.edge[i][node]['weight']
+			i = node
+
+	#lower bound += exiting a and b	
+	#min edge leaving a, to node in V-soln
+	min_a = min(all_nodes, key=lambda u: G.edge[soln[0]][u]['weight'])
+
+	#min edge leaving b
+	min_b = min(all_nodes, key=lambda u: G.edge[soln[-1]][u]['weight'])
+
+	exit_a = G.edge[soln[0]][min_a]['weight']
+	exit_b = G.edge[soln[-1]][min_b]['weight']
+
+	path += .5*(exit_a + exit_b) #lb is now partial soln + lower bound on exiting a and b
+
+	all_nodes.append(soln[-1])
+	all_nodes.append(soln[0]) #add a and b back in
+
+	
+
+	for node in G_nodes:
+		all_nodes.remove(node)
+		min_node = min(all_nodes, key = lambda u: G.edge[node][u]['weight'])
+		path += .5*(G.edge[node][min_node]['weight'])
+		all_nodes.remove(min_node)
+		min_node2 = min(all_nodes, key = lambda u: G.edge[node][u]['weight'])
+		path += .5*(G.edge[node][min_node2]['weight'])
+		all_nodes.append(min_node)
+		all_nodes.append(node)
 
 	return path
 

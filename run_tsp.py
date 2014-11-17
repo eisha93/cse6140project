@@ -9,6 +9,8 @@ import itertools
 import nearestNeighbor as nn
 import branchAndBound as bb
 import hillClimbing as hc
+import cProfile
+import re
 
 class RunTSP:
     def create_graph(self, filename):
@@ -99,19 +101,19 @@ class RunTSP:
 
 
 
-        nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
-        print nn_cost
-        print nn_tour
+        #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
+        #print nn_cost
+        #print nn_tour
 
         cutoff_time = float("inf") #in minutes
 
         #i hate you
-        #bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
-        #if bb_tour is None:
-        #    print "give me more time yo"
-        #else:
-        #    print bb_cost
-        #    print bb_tour
+        bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+        if bb_tour is None:
+            print "give me more time yo"
+        else:
+            print bb_cost
+            print bb_tour
         #self.testing(G)
 
         #hc_tour,hc_cost = hc.hctour(G) #hill climbing

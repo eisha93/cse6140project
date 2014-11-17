@@ -2,23 +2,25 @@ import numpy as np
 import branchAndBound as bb
 import copy
 
-def hillclimb(G):
+def hillclimb(G, all_combs):
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
 	maxIter = 1000
 	iterations = 0
+	#print curr_cost
 
 	while iterations<maxIter:
-		print iterations
+		#print iterations
 		#print "huh2 " + str(curr_soln)
-		temp_cost, next_soln = find_next_soln(curr_soln, G) #find the best of its neighborhood... so if this cost is less than current optimal we have reached the peak.. is this correct
+		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs) #find the best of its neighborhood... so if this cost is less than current optimal we have reached the peak.. is this correct
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
 		#temp_cost = bb.find_cost(next_soln)
-		if temp_cost > curr_cost:
+		if temp_cost >= curr_cost:
 			print "woo" + str(iterations)
 			return curr_cost,curr_soln #meaning we have reached the "peak"
 		curr_cost = temp_cost
+		print curr_cost
 		curr_soln = next_soln
 
 		iterations += 1
@@ -26,8 +28,8 @@ def hillclimb(G):
 	return curr_cost,curr_soln
 
 
-def find_next_soln(curr_soln, G):
-	successors = find_successors(curr_soln, G)
+def find_next_soln(curr_soln, G, all_combs):
+	successors = find_successors(curr_soln, G, all_combs)
 	best_soln = None
 	best_cost = float("inf")
 
@@ -48,10 +50,11 @@ def all_combinations(G):
 
 	for i in range(1,n):
 		for j in range(1,n):
-			all_combos.append((i,j))
+			if i<j:
+				all_combos.append((i,j))
 	return all_combos
 
-def find_successors(curr_soln, G):
+def find_successors(curr_soln, G, all_combs):
 	#print "calling find successors"
 	#given a current solution find its "neighbors"?
 	#use 2-OPT to find all possible variations of the curr_soln --> find all possible variations of swapping
@@ -59,7 +62,7 @@ def find_successors(curr_soln, G):
 
 	n = len(G.nodes()) - 1
 	#print str(bb.find_cost(curr_soln)) + "AOGHOSG"
-	all_combs = all_combinations(G)
+	
 	#print all_combs
 	for (i,j) in all_combs:
 		if i<j:
@@ -74,14 +77,17 @@ def find_successors(curr_soln, G):
 
 
 def hctour(G):
-	num_iter = 5
+	num_iter = 100
 	iterations = 0
 
 	best_soln = None
 	best_cost = float("inf")
 
+	all_combs = all_combinations(G)
+
 	while iterations < num_iter:
-		new_cost,new_soln = hillclimb(G)
+		print "hi" + str(iterations)
+		new_cost,new_soln = hillclimb(G, all_combs)
 
 		if best_soln is None:
 			best_soln = new_soln
