@@ -113,6 +113,7 @@ def find_cost_min_tree(G):
 		nodes.remove(min_node)
 		min_node2 = min(nodes, key = lambda u: G.edge[node][u]['weight'])
 		nodes.append(min_node)
+		path += G.edge[node][min_node2]['weight']
 
 		nodes.append(node)
 
