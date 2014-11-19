@@ -78,19 +78,45 @@ def bbtour(G, cutoff_time):
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
 				
-				print "best cost is " + str(best_cost) + " and soln is " + str(best_soln)
+				print "best cost is " + str(best_cost) + " size F is " + str(len(F))
 				#return best_soln, best_cost
 			else:
 				if lower_bound(config, G) < best_cost:
 					#print "F: " + str(F)
 					F.append(config)
-					print "lb is " + str(lower_bound(config, G)) + " config is " + str(config)
-				else:
-					print best_soln
-					print best_cost
+					#print "lb is " + str(lower_bound(config, G)) + " config is " + str(config)
+				#else:
+					#print best_soln
+					#print best_cost
 					#return -1
-					print "pruned"
+					#print "pruned"
 	return best_soln, best_cost
+
+def find_cost_min_tree(G):
+	nodes = G.nodes()
+	nodes2 = G.nodes()
+
+	best = float("inf")
+
+	for node in nodes2:
+		path = 0
+
+		nodes.remove(node)
+		sub_graph = G.subgraph(nodes)
+		mst = nx.minimum_spanning_tree(sub_graph)
+
+		for gedge in mst.edges():
+			path += G.edge[gedge[0]][gedge[1]]['weight']
+
+		min_node = min(nodes, key = lambda u: G.edge[node][u]['weight'])
+		path += G.edge[node][min_node]['weight']
+		nodes.remove(min_node)
+		min_node2 = min(nodes, key = lambda u: G.edge[node][u]['weight'])
+		nodes.append(min_node)
+
+		nodes.append(node)
+
+	return path
 
 def find_cost(config, G):
 	count = 0
@@ -209,7 +235,34 @@ def lower_bound_easy(soln, G):
 
 	return path
 
-def lower_bound(soln, G):
+def lower_bound_nn(soln, G):
+	count = 0
+	path = 0
+	all_nodes = G.nodes()
+	G_nodes = G.nodes()
+	#lower bound = partial path we have
+	for node in soln:
+		all_nodes.remove(node)
+		G_nodes.remove(node)
+		if count == 0:
+			count = 1
+			i = node
+			#call choose_lowe
+		else:
+			path += G.edge[i][node]['weight']
+			i = node
+
+	last = soln[-1]
+
+	while all_nodes:
+		min_node = min(all_nodes, key=lambda u: G.edge[last][u]['weight'])
+		path += G.edge[min_node][last]['weight']
+		all_nodes.remove(min_node)
+		last = min_node
+
+	return path
+
+def lower_bound_mst(soln, G):
 	count = 0
 	path = 0
 	all_nodes = G.nodes()
