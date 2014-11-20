@@ -9,6 +9,7 @@ import itertools
 import nearestNeighbor as nn
 import branchAndBound as bb
 import hillClimbing as hc
+import mstApprox as mst
 import cProfile
 import re
 
@@ -108,13 +109,18 @@ class RunTSP:
         cutoff_time = float("inf") #in minutes
 
         #i hate you
-        bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
-        if bb_tour is None:
-            print "give me more time yo"
-        else:
-            print bb_cost
-            print bb_tour
+        #COMMENTED OUT FOR MY TESTING
+        
+        # bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+        # if bb_tour is None:
+        #     print "give me more time yo"
+        # else:
+        #     print bb_cost
+        #     print bb_tour
         #self.testing(G)
+
+        nodes_list = mst.MST_approx_tour(G)
+
 
         #hc_tour,hc_cost = hc.hctour(G) #hill climbing
         #print hc_tour #HAHAH DO YOU ACTUALLY WORK
