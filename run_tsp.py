@@ -103,7 +103,7 @@ class RunTSP:
         #print p.edges()
         return p
     def main(self):
-
+        optimals = [3323, 6859, 7542, 21282, 6528, 40160]
         filename = sys.argv[1]
         #cutoff_time = int(sys.argv[2])
         #algorithm = sys.argv[3]
@@ -111,35 +111,104 @@ class RunTSP:
 
         G = self.create_graph(filename)
 
+        #for finding relative error
+        opt_sol = None
+        if filename == 'burma14.tsp':
+            opt_sol = optimals[0]
+        elif filename == 'ulysses16.tsp':
+            opt_sol = optimals[1]
+        elif filename == 'berlin52.tsp':
+            opt_sol = optimals[2]
+        elif filename == 'kroA100.tsp':
+            opt_sol = optimals[3]
+        elif filename == 'ch150.tsp':
+            opt_sol = optimals[4]
+        elif filename == 'gr202.tsp':
+            opt_sol = optimals[5]
+        else:
+            print "You didn't give the right filename, try again"
+            exit()
+        #begin testing for 5 algorithms
+        #uncomment out whichever ones that you need to test
+        #
+        #
 
-
-        #nn_tour,nn_cost = nn.nntour(G) #nearest neighbor
-        #print nn_cost
-        #print nn_tour
-
-        cutoff_time = float("inf") #in minutes
-
-        #i hate you
-        #COMMENTED OUT FOR MY TESTING
-
+        #Branch and Bound
+        #print 'NOW RUNNING BRANCH AND BOUND'
+        #print 'testing ' + filename
+        #start_bb = time.time()
         # bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+        #end_bb = (time.time() - start_bb) * 1000 #to convert to millis
         # if bb_tour is None:
         #     print "give me more time yo"
         # else:
         #     print bb_cost
         #     print bb_tour
+        #bb_rel_err = float(abs(bb_cost - opt_sol))/float(opt_sol)
+        #print bb_rel_err
         #self.testing(G)
 
-        #p is a small 3 node graph TESTING ONLY 
-        P = self.make_p_graph()
-        for n in range(10):
-            nodes_list = mst.MST_approx_tour(G)
 
-        # for x in range(5): #to test multiple runs
-        #     hc_tour,hc_cost = hc.hctour(G) #hill climbing
-        #     print 'hillClimbing'
-        #     print hc_tour #HAHAH DO YOU ACTUALLY WORK
-        #     print hc_cost
+        #MST approximation
+        #print 'NOW RUNNING MST APPROXIMATION'
+        # print 'testing ' + filename
+        # start_mst = time.time()
+        # mstApprox_cost = mst.MST_approx_tour(G)
+        # end_mst = (time.time() - start_mst) * 1000 #to convert to millis
+        # mstApprox_rel_err = float(abs(mstApprox_cost - opt_sol))/float(opt_sol)
+        # print mstApprox_cost
+        # print mstApprox_rel_err
+        # print end_mst
+
+
+        #Nearest Neighbor approximation
+        #print 'NOW RUNNING NEAREST NEIGHBOR'
+        # print 'testing ' + filename
+        #start_nn = time.time()
+        #nn_tour,nn_cost = nn.nntour(G)
+        #end_nn = (time.time() - start_nn) * 1000 #to convert to millis
+        #print nn_cost
+        #print nn_tour
+        #nn_rel_error = float(abs(nn_cost - opt_sol))/float(opt_sol)
+        #print nn_rel_err
+
+
+        #hillClimbing local search
+        #print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
+        # print 'testing ' + filename
+        #start_hc = time.time()
+        # hc_tour,hc_cost = hc.hctour(G) #hill climbing
+        # end_hc = (time.time() - start_hc) * 1000 #to convert to millis
+        # print 'hillClimbing'
+        # print hc_tour
+        # print hc_cost
+        #hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
+        #print hc_rel_err
+
+
+        #iterated local search - NOT YET STARTED
+        #print 'NOW RUNNING ITERATED LOCAL SEARCH'
+        # print 'testing ' + filename
+        #start_ils = time.time()
+        #PLACE CALL TO FXN HERE
+        #end_ils = (time.time() - start_ils) * 1000 #to convert to millis
+        #ils_rel_err = float(abs(ils_cost - opt_sol))/float(opt_sol)
+        
+        #
+        #
+        #
+        #
+        #
+        #
+        #FOR RANDOM TESTING FUNCTIONS AND METHODS
+        #PLACE ALL RANDOM CODE HERE, NOT ABOVE! 
+        #
+        
+        #p is a small 3 node graph TESTING ONLY 
+        #P = self.make_p_graph()
+        
+        # cutoff_time = float("inf") #in minutes
+        
 
 if __name__ == '__main__':
     runtsp = RunTSP()
