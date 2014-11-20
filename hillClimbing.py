@@ -25,10 +25,10 @@ def hillclimb(G, all_combs):
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
 		#temp_cost = bb.find_cost(next_soln)
 		if temp_cost >= curr_cost:
-			print "woo" + str(iterations)
+			#print "woo" + str(iterations)
 			return curr_cost,curr_soln #meaning we have reached the "peak"
 		curr_cost = temp_cost
-		print curr_cost
+		#print curr_cost
 		curr_soln = next_soln
 
 		iterations += 1
@@ -94,7 +94,7 @@ def hctour(G):
 	all_combs = all_combinations(G)
 
 	while iterations < num_iter:
-		print "hi" + str(iterations)
+		#print "hi" + str(iterations)
 		new_cost,new_soln = hillclimb(G, all_combs)
 
 		if best_soln is None:

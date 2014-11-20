@@ -89,8 +89,19 @@ class RunTSP:
             elif temp == 3454:
                 print "eh "
 
-
-
+    def make_p_graph(self):
+        p = nx.Graph()
+        for x in range(1,5):
+            p.add_node(x)
+            #print x
+        p.add_edge(1, 2, weight = 1)
+        p.add_edge(2,3, weight = 2)
+        p.add_edge(1,3, weight = 3)
+        p.add_edge(1, 4, weight = 1)
+        p.add_edge(4,3, weight = 2)
+        p.add_edge(2,4,weight=3)
+        #print p.edges()
+        return p
     def main(self):
 
         filename = sys.argv[1]
@@ -110,7 +121,7 @@ class RunTSP:
 
         #i hate you
         #COMMENTED OUT FOR MY TESTING
-        
+
         # bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
         # if bb_tour is None:
         #     print "give me more time yo"
@@ -119,12 +130,16 @@ class RunTSP:
         #     print bb_tour
         #self.testing(G)
 
-        nodes_list = mst.MST_approx_tour(G)
+        #p is a small 3 node graph TESTING ONLY 
+        P = self.make_p_graph()
+        for n in range(10):
+            nodes_list = mst.MST_approx_tour(G)
 
-
-        #hc_tour,hc_cost = hc.hctour(G) #hill climbing
-        #print hc_tour #HAHAH DO YOU ACTUALLY WORK
-        #print hc_cost
+        # for x in range(5): #to test multiple runs
+        #     hc_tour,hc_cost = hc.hctour(G) #hill climbing
+        #     print 'hillClimbing'
+        #     print hc_tour #HAHAH DO YOU ACTUALLY WORK
+        #     print hc_cost
 
 if __name__ == '__main__':
     runtsp = RunTSP()
