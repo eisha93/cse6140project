@@ -2,6 +2,8 @@ import numpy as np
 import branchAndBound as bb
 import copy
 
+tabu = []
+
 def hillclimb(G, all_combs):
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
@@ -10,10 +12,16 @@ def hillclimb(G, all_combs):
 	iterations = 0
 	#print curr_cost
 
+	tabu.append(curr_soln)
+
 	while iterations<maxIter:
 		#print iterations
 		#print "huh2 " + str(curr_soln)
-		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs) #find the best of its neighborhood... so if this cost is less than current optimal we have reached the peak.. is this correct
+		
+		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
+
+		print next_soln
+
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
 		#temp_cost = bb.find_cost(next_soln)
 		if temp_cost >= curr_cost:

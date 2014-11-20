@@ -1,8 +1,10 @@
+from __future__ import division
 import copy
 import time
 import numpy as np
 import nearestNeighbor as nn
 import networkx as nx
+
 
 def bbtour(G, cutoff_time):
 	start_time = time.time()
@@ -59,6 +61,7 @@ def bbtour(G, cutoff_time):
 		
 		partial_soln = choose_lowerbound(F,G)
 		#print "WTF " + str(partial_soln)
+		#print partial_soln
 		F.remove(partial_soln)
 
 		new_configs = expand(partial_soln, G) #do I ever return an empty list
@@ -77,26 +80,31 @@ def bbtour(G, cutoff_time):
 					best_soln = copy.deepcopy(config)
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
-				
-				print "best cost is " + str(best_cost) + " size F is " + str(len(F))
-				#return best_soln, best_cost
+				return best_cost,best_soln
+				#print "best cost is " + str(best_cost) + " size F is " + str(len(F))
+				print str(best_soln) + ", " + str(best_cost)
 			else:
-				if lower_bound(config, G) < best_cost:
+				if lower_bound_mst(config, G) < best_cost:
 					#print "F: " + str(F)
 					F.append(config)
-					#print "lb is " + str(lower_bound(config, G)) + " config is " + str(config)
+					print "lb is " + str(lower_bound_minonetree(config, G)) + " config is " + str(config)
 				#else:
 					#print best_soln
 					#print best_cost
 					#return -1
-					#print "pruned"
+					#print "pruned" + str(config)
 	return best_soln, best_cost
 
 def find_cost_min_tree(G):
+	#LARGEST of min 1-trees is a decent lower bound...?
+
 	nodes = G.nodes()
 	nodes2 = G.nodes()
 
-	best = float("inf")
+	best = 0
+
+	#print "nodes :" + str(nodes)
+	#print nodes2
 
 	for node in nodes2:
 		path = 0
@@ -111,13 +119,21 @@ def find_cost_min_tree(G):
 		min_node = min(nodes, key = lambda u: G.edge[node][u]['weight'])
 		path += G.edge[node][min_node]['weight']
 		nodes.remove(min_node)
-		min_node2 = min(nodes, key = lambda u: G.edge[node][u]['weight'])
+
+		if nodes!=[]:
+			#print "nodes: " + str(nodes)
+			min_node2 = min(nodes, key = lambda u: G.edge[node][u]['weight'])
+			path += G.edge[node][min_node2]['weight']
+
 		nodes.append(min_node)
-		path += G.edge[node][min_node2]['weight']
 
 		nodes.append(node)
 
-	return path
+		if path > best:
+			best = path
+		#print path
+
+	return best
 
 def find_cost(config, G):
 	count = 0
@@ -143,6 +159,26 @@ def check(config, G):
 			return 0
 	return 1
 
+def choose_minonetree(F,G):
+	best_soln = None
+	best_cost = float("inf")
+	best_ratio = float("inf")
+	#min lb/numnodes
+
+	for soln in F:
+		cost = lower_bound_minonetree(soln, G)
+		length = len(soln)
+
+		ratio = float(cost/length)
+		#print "ratio: " + str(ratio) + ", cost: " + str(cost) + ", len: " + str (length)
+
+		if ratio < best_ratio:
+			best_soln = soln
+			best_cost = cost
+			best_ratio = ratio
+	return best_soln
+
+
 
 def choose_lowerbound(F, G):
 	best = None
@@ -152,7 +188,7 @@ def choose_lowerbound(F, G):
 	for soln in F:
 		#print "lol"
 		#print "soln: " + str(soln)
-		temp = lower_bound(soln, G)
+		temp = lower_bound_mst(soln, G)
 		#print str(temp) + "kill me"
 		#print "soln2"  + str(soln)
 		#if best == None:
@@ -177,6 +213,27 @@ def choose_lowerbound(F, G):
 		
 	#print "in choose: " + str(best)
 	return best
+
+def lower_bound_minonetree(soln, G):
+	count = 0
+	path = 0
+	all_nodes = G.nodes()
+
+
+	for node in soln:
+		all_nodes.remove(node)
+		if count == 0:
+			count = 1
+			i = node
+		else:
+			path += G.edge[i][node]['weight']
+			i = node
+	all_nodes.append(soln[-1])
+
+	subgraph = G.subgraph(all_nodes)
+	path += find_cost_min_tree(subgraph)
+
+	return path
 
 #choose best config in list of partial solns based off of partial solns in F
 def choose(F, G):
