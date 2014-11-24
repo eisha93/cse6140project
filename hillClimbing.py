@@ -1,6 +1,7 @@
 import numpy as np
 import branchAndBound as bb
 import copy
+import time
 
 tabu = []
 
@@ -84,7 +85,9 @@ def find_successors(curr_soln, G, all_combs):
 	return successors
 
 
-def hctour(G):
+def hctour(G, trfilename):
+	trfile = open(trfilename, 'w')
+	start_time = time.time()
 	num_iter = 1
 	iterations = 0
 
@@ -100,10 +103,11 @@ def hctour(G):
 		if best_soln is None:
 			best_soln = new_soln
 			best_cost = new_cost
+			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 		if new_cost < best_cost:
 			best_cost = new_cost
 			best_soln = new_soln
-
+			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 		iterations += 1
 
 	best_soln.append(best_soln[0])

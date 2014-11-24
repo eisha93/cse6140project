@@ -6,7 +6,8 @@ import nearestNeighbor as nn
 import networkx as nx
 
 
-def bbtour(G, cutoff_time):
+def bbtour(G, cutoff_time, trfilename):
+	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	i=0
 	#best = list(np.random.permutation(G.nodes()))
@@ -27,6 +28,7 @@ def bbtour(G, cutoff_time):
 	#best_soln.append(best_soln[0])
 	
 	best_soln, best_cost = nn.nntour(G)
+	trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 
 	print best_soln
 	print best_cost
@@ -80,7 +82,8 @@ def bbtour(G, cutoff_time):
 					best_soln = copy.deepcopy(config)
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
-				return best_cost,best_soln
+					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+				#return best_cost,best_soln
 				#print "best cost is " + str(best_cost) + " size F is " + str(len(F))
 				print str(best_soln) + ", " + str(best_cost)
 			else:

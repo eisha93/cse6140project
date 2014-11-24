@@ -1,5 +1,6 @@
 import itertools
 from random import randint
+import time
 
 #s = random vertex v
 #while not all vertices visited
@@ -10,11 +11,15 @@ from random import randint
 
 #do we need to iterate through all possible nn tours? 
 #as in, start at each node and find its nn tour and then find the min of all of those...?
-def nntour(G):
-
+def nntour(G, trfilename):
+	trfile = open(trfilename, 'w')
+	start_time = time.time()
 	#why don't you work OH BUT YOU DO
 
-	dict = {}
+	best_tour = None
+	best_cost = float("inf")
+
+	#dict = {}
 	for node in G.nodes():
 		#print node
 		not_visited = G.nodes()
@@ -35,11 +40,20 @@ def nntour(G):
 		tour += G.edge[visited[-1]][visited[0]]['weight'] #add the cost to get back to the beginning cuz its a cycleeee
 		visited.append(visited[0]) #make it a cycle????
 
-		dict[tour] = visited
+		if best_tour is None:
+			best_tour = visited
+			best_cost = tour
+			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+		if tour < best_cost:
+			best_tour = visited
+			best_cost = tour
+			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+		#dict[tour] = visited
 	#print dict
-	min_cost = min(dict)
-	min_tour = dict[min_cost]
-	return min_tour, min_cost
+	#min_cost = min(dict)
+	#min_tour = dict[min_cost]
+	#return min_tour, min_cost
+	return best_tour, best_cost
 
 
 

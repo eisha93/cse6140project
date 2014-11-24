@@ -136,10 +136,13 @@ class RunTSP:
 
         if algorithm == 'branch_and_bound' or algorithm == 'mst_approx' or algorithm == 'nearest_neighbor':
             solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + ".sol"
+            trfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + ".trace"
         else:
             solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".sol"
+            trfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".trace"
 
         solfile = open(solfilename, 'w')
+        #trfile = open(trfilename, 'w')
 
         tour = G.nodes()
         cost = float("inf")
@@ -149,7 +152,7 @@ class RunTSP:
             print 'NOW RUNNING BRANCH AND BOUND'
             print 'testing ' + filename
             start_bb = time.time()
-            bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+            bb_tour,bb_cost = bb.bbtour(G, cutoff_time, trfilename) #branch and bound
             end_bb = (time.time() - start_bb) #in seconds
             if bb_tour is None:
                 print "give me more time yo"
@@ -170,7 +173,7 @@ class RunTSP:
             print 'NOW RUNNING MST APPROXIMATION'
             print 'testing ' + filename
             start_mst = time.time()
-            mstApprox_cost = mst.MST_approx_tour(G)
+            mstApprox_cost = mst.MST_approx_tour(G, trfilename)
             end_mst = (time.time() - start_mst) #in seconds
             mstApprox_rel_err = float(abs(mstApprox_cost - opt_sol))/float(opt_sol)
             #print mstApprox_cost
@@ -183,7 +186,7 @@ class RunTSP:
             print 'NOW RUNNING NEAREST NEIGHBOR'
             print 'testing ' + filename
             start_nn = time.time()
-            nn_tour,nn_cost = nn.nntour(G)
+            nn_tour,nn_cost = nn.nntour(G, trfilename)
             end_nn = (time.time() - start_nn) #in seconds
             print "cost: " + str(nn_cost)
             print "time: " + str(end_nn)
@@ -197,7 +200,7 @@ class RunTSP:
             print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
             print 'testing ' + filename
             start_hc = time.time()
-            hc_tour,hc_cost = hc.hctour(G) #hill climbing
+            hc_tour,hc_cost = hc.hctour(G, trfilename) #hill climbing
             end_hc = (time.time() - start_hc) #in seconds
             print "time: " + str(end_hc)
             print "length: " + str(hc_cost)
@@ -213,12 +216,12 @@ class RunTSP:
         else:
             print "you failure enter the correct name for an algorithm"
 
-        solfile.write(str(cost))
+        solfile.write(str(cost)+"\n")
         tour_str = ""
         for node in tour:
             tour_str += str(node) + ","
         tour_str = tour_str[:(len(tour_str)-1)] #delete the last comma
-        solfile.write(tour_str)
+        solfile.write(tour_str+"\n")
 
 
         #iterated local search - NOT YET STARTED
