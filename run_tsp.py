@@ -135,11 +135,11 @@ class RunTSP:
         #
 
         if algorithm == 'branch_and_bound' or algorithm == 'mst_approx' or algorithm == 'nearest_neighbor':
-            solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + ".sol"
-            trfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + ".trace"
+            solfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + ".sol"
+            trfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + ".trace"
         else:
-            solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".sol"
-            trfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".trace"
+            solfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".sol"
+            trfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".trace"
 
         solfile = open(solfilename, 'w')
         #trfile = open(trfilename, 'w')
