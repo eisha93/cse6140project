@@ -20,7 +20,7 @@ def hillclimb(G, all_combs):
 		
 		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
 
-		print next_soln
+		#print next_soln
 
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
 		#temp_cost = bb.find_cost(next_soln)
@@ -85,7 +85,7 @@ def find_successors(curr_soln, G, all_combs):
 
 
 def hctour(G):
-	num_iter = 100
+	num_iter = 1
 	iterations = 0
 
 	best_soln = None

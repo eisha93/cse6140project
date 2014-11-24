@@ -47,8 +47,8 @@ class RunTSP:
                         	#print l
                         	data = list(map(lambda x: float(x), l.split()))
                         	G.add_node(data[0], x_coord=data[1], y_coord=data[2])
-                else:
-                    print "HALP"
+                #else:
+                    #print "HALP"
         f.close()
         
 
@@ -163,27 +163,28 @@ class RunTSP:
 
         #Nearest Neighbor approximation
         #print 'NOW RUNNING NEAREST NEIGHBOR'
-        # print 'testing ' + filename
+        #print 'testing ' + filename
         #start_nn = time.time()
         #nn_tour,nn_cost = nn.nntour(G)
         #end_nn = (time.time() - start_nn) * 1000 #to convert to millis
-        #print nn_cost
+        #print "cost: " + str(nn_cost)
+        #print "time: " + str(end_nn)
         #print nn_tour
         #nn_rel_error = float(abs(nn_cost - opt_sol))/float(opt_sol)
-        #print nn_rel_err
+        #print "error: " + str(nn_rel_error)
 
 
         #hillClimbing local search
-        #print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
-        # print 'testing ' + filename
-        #start_hc = time.time()
-        # hc_tour,hc_cost = hc.hctour(G) #hill climbing
-        # end_hc = (time.time() - start_hc) * 1000 #to convert to millis
-        # print 'hillClimbing'
-        # print hc_tour
-        # print hc_cost
-        #hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
-        #print hc_rel_err
+        print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
+        print 'testing ' + filename
+        start_hc = time.time()
+        hc_tour,hc_cost = hc.hctour(G) #hill climbing
+        end_hc = (time.time() - start_hc) * 1000 #to convert to millis
+        print "time: " + str(end_hc)
+        print "length: " + str(hc_cost)
+        hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
+        print "err: " + str(hc_rel_err)
+        print ""
 
 
         #iterated local search - NOT YET STARTED
