@@ -104,11 +104,12 @@ class RunTSP:
         return p
     def main(self):
         optimals = [3323, 6859, 7542, 21282, 6528, 40160]
-        filename = sys.argv[1]
-        #cutoff_time = int(sys.argv[2])
-        #algorithm = sys.argv[3]
-        #random_seed = sys.argv[4]
 
+        filename = sys.argv[1]
+        cutoff_time = int(sys.argv[2])
+        algorithm = sys.argv[3]
+        #random_seed = sys.argv[4]
+        random_seed = 1
         G = self.create_graph(filename)
 
         #for finding relative error
@@ -133,58 +134,91 @@ class RunTSP:
         #
         #
 
-        #Branch and Bound
-        #print 'NOW RUNNING BRANCH AND BOUND'
-        #print 'testing ' + filename
-        #start_bb = time.time()
-        # bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
-        #end_bb = (time.time() - start_bb) * 1000 #to convert to millis
-        # if bb_tour is None:
-        #     print "give me more time yo"
-        # else:
-        #     print bb_cost
-        #     print bb_tour
-        #bb_rel_err = float(abs(bb_cost - opt_sol))/float(opt_sol)
-        #print bb_rel_err
-        #self.testing(G)
+        if algorithm == 'branch_and_bound' or algorithm == 'mst_approx' or algorithm == 'nearest_neighbor':
+            solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + ".sol"
+        else:
+            solfilename = filename + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(random_seed) + ".sol"
 
+        solfile = open(solfilename, 'w')
 
-        #MST approximation
-        #print 'NOW RUNNING MST APPROXIMATION'
-        # print 'testing ' + filename
-        # start_mst = time.time()
-        # mstApprox_cost = mst.MST_approx_tour(G)
-        # end_mst = (time.time() - start_mst) * 1000 #to convert to millis
-        # mstApprox_rel_err = float(abs(mstApprox_cost - opt_sol))/float(opt_sol)
-        # print mstApprox_cost
-        # print mstApprox_rel_err
-        # print end_mst
+        tour = G.nodes()
+        cost = float("inf")
 
+        if algorithm == 'branch_and_bound':
+            #Branch and Bound
+            print 'NOW RUNNING BRANCH AND BOUND'
+            print 'testing ' + filename
+            start_bb = time.time()
+            bb_tour,bb_cost = bb.bbtour(G, cutoff_time) #branch and bound
+            end_bb = (time.time() - start_bb) #in seconds
+            if bb_tour is None:
+                print "give me more time yo"
+            #else:
+            #    solfile.write(str(bb_cost))
+            #    tour = ""
+            #    for node in bb_tour:
+            #        tour += str(node)
 
-        #Nearest Neighbor approximation
-        #print 'NOW RUNNING NEAREST NEIGHBOR'
-        #print 'testing ' + filename
-        #start_nn = time.time()
-        #nn_tour,nn_cost = nn.nntour(G)
-        #end_nn = (time.time() - start_nn) * 1000 #to convert to millis
-        #print "cost: " + str(nn_cost)
-        #print "time: " + str(end_nn)
-        #print nn_tour
-        #nn_rel_error = float(abs(nn_cost - opt_sol))/float(opt_sol)
-        #print "error: " + str(nn_rel_error)
+                #print bb_cost
+                #print bb_tour
+            bb_rel_err = float(abs(bb_cost - opt_sol))/float(opt_sol)
+            print bb_rel_err
+            tour = bb_tour
+            cost = bb_cost
+        elif algorithm == 'mst_approx':
+            #MST approximation
+            print 'NOW RUNNING MST APPROXIMATION'
+            print 'testing ' + filename
+            start_mst = time.time()
+            mstApprox_cost = mst.MST_approx_tour(G)
+            end_mst = (time.time() - start_mst) #in seconds
+            mstApprox_rel_err = float(abs(mstApprox_cost - opt_sol))/float(opt_sol)
+            #print mstApprox_cost
+            #print mstApprox_rel_err
+            #print end_mst
+            #tour = mst_tour #FIX ME
+            #cost = mst_cost #FIX ME
+        elif algorithm == 'nearest_neighbor':
+            #Nearest Neighbor approximation
+            print 'NOW RUNNING NEAREST NEIGHBOR'
+            print 'testing ' + filename
+            start_nn = time.time()
+            nn_tour,nn_cost = nn.nntour(G)
+            end_nn = (time.time() - start_nn) #in seconds
+            print "cost: " + str(nn_cost)
+            print "time: " + str(end_nn)
+            print nn_tour
+            nn_rel_error = float(abs(nn_cost - opt_sol))/float(opt_sol)
+            print "error: " + str(nn_rel_error)
+            tour = nn_tour
+            cost = nn_cost
+        elif algorithm == 'hill_climbing':
+            #hillClimbing local search
+            print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
+            print 'testing ' + filename
+            start_hc = time.time()
+            hc_tour,hc_cost = hc.hctour(G) #hill climbing
+            end_hc = (time.time() - start_hc) #in seconds
+            print "time: " + str(end_hc)
+            print "length: " + str(hc_cost)
+            hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
+            print "err: " + str(hc_rel_err)
+            print ""
+            tour = hc_tour
+            cost = hc_cost
+        elif algorithm == 'simulated_annealing':
+            print "hi"
+            #tour = sa_tour FIX ME
+            #cost = sa_cost FIX ME
+        else:
+            print "you failure enter the correct name for an algorithm"
 
-
-        #hillClimbing local search
-        print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
-        print 'testing ' + filename
-        start_hc = time.time()
-        hc_tour,hc_cost = hc.hctour(G) #hill climbing
-        end_hc = (time.time() - start_hc) * 1000 #to convert to millis
-        print "time: " + str(end_hc)
-        print "length: " + str(hc_cost)
-        hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
-        print "err: " + str(hc_rel_err)
-        print ""
+        solfile.write(str(cost))
+        tour_str = ""
+        for node in tour:
+            tour_str += str(node) + ","
+        tour_str = tour_str[:(len(tour_str)-1)] #delete the last comma
+        solfile.write(tour_str)
 
 
         #iterated local search - NOT YET STARTED

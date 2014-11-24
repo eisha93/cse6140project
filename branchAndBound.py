@@ -40,7 +40,7 @@ def bbtour(G, cutoff_time):
 	rest = 0
 	#print "F: "+str(F)
 	while F:
-		if (time.time() - start_time)/60 >= cutoff_time:
+		if (time.time() - start_time) >= cutoff_time:
 			return best_soln, best_cost
 		#choose partial soln in F to expand by lower bound (and remove from F)
 		#expand 
@@ -67,7 +67,7 @@ def bbtour(G, cutoff_time):
 		new_configs = expand(partial_soln, G) #do I ever return an empty list
 		
 		for config in new_configs:
-			if (time.time() - start_time)/60 >= cutoff_time:
+			if (time.time() - start_time) >= cutoff_time:
 				return best_soln, best_cost
 			#'check' new config
 			is_soln = check(config, G)
