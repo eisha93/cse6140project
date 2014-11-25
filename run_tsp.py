@@ -200,7 +200,7 @@ class RunTSP:
             print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
             print 'testing ' + filename
             start_hc = time.time()
-            hc_tour,hc_cost = hc.hctour(G, trfilename) #hill climbing
+            hc_tour,hc_cost = hc.hctour(G, trfilename, opt_sol) #hill climbing
             end_hc = (time.time() - start_hc) #in seconds
             print "time: " + str(end_hc)
             print "length: " + str(hc_cost)

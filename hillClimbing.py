@@ -5,23 +5,29 @@ import time
 
 tabu = []
 
-def hillclimb(G, all_combs):
+def hillclimb(G, all_combs, opt_sol):
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
-	maxIter = 1000
+	maxIter = 1000000
 	iterations = 0
 	#print curr_cost
+	#best_cost = float("inf")
+	#best_soln = None
+	#tabu.append(curr_soln)
 
-	tabu.append(curr_soln)
-
+	q = .008 #.8%
+	#7733
 	while iterations<maxIter:
 		#print iterations
 		#print "huh2 " + str(curr_soln)
 		
 		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
-
+		#print temp_cost
 		#print next_soln
+
+		if temp_cost <= (q*opt_sol) + opt_sol: 
+			print "LOLOLOLOL"
 
 		#print "huh3 " + str(curr_soln) + " nextsoln " + str(next_soln)
 		#temp_cost = bb.find_cost(next_soln)
@@ -85,10 +91,10 @@ def find_successors(curr_soln, G, all_combs):
 	return successors
 
 
-def hctour(G, trfilename):
+def hctour(G, trfilename, opt_sol):
 	trfile = open(trfilename, 'w')
-	start_time = time.time()
-	num_iter = 1
+	#start_time = time.time()
+	num_iter = 50
 	iterations = 0
 
 	best_soln = None
@@ -98,16 +104,16 @@ def hctour(G, trfilename):
 
 	while iterations < num_iter:
 		#print "hi" + str(iterations)
-		new_cost,new_soln = hillclimb(G, all_combs)
-
+		new_cost,new_soln = hillclimb(G, all_combs, opt_sol)
+		print new_cost
 		if best_soln is None:
 			best_soln = new_soln
 			best_cost = new_cost
-			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+			#trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 		if new_cost < best_cost:
 			best_cost = new_cost
 			best_soln = new_soln
-			trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+			#trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 		iterations += 1
 
 	best_soln.append(best_soln[0])
