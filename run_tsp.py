@@ -14,16 +14,19 @@ import cProfile
 import re
 
 class RunTSP:
+    #pass in the direct filename to this method, returns an undirected graph with edges between every pair of cities (don't need to modify this)
     def create_graph(self, filename):
 
         # init graph
         G = nx.Graph()
 
         yes = 1
+        #iterates through file to set appropriate variables
         with open(filename, "r") as f: 
             while (yes == 1):                     
                 line = f.readline()
-                line = line.rstrip()             
+                line = line.rstrip()
+                #sets name
                 if line.startswith('NAME: '):
                     tsp_name = line[6:]
                 elif line.startswith('TYPE: '):
@@ -38,6 +41,8 @@ class RunTSP:
                     tsp_ewf = line[20:]
                 elif line.startswith('DISPLAY_DATA_TYPE: '):
                     tsp_ddt = line[19:]
+                elif line.startswith('OPTIMAL_COST: '):
+                    tsp_opt = int(line[14:])
                 elif line.startswith('NODE_COORD_SECTION'):
                     yes = 0
                     for l in f:
@@ -45,6 +50,7 @@ class RunTSP:
                         	break
                         else:
                         	#print l
+                            #splits each node data into node index, node x_coordinate, y_coordinate
                         	data = list(map(lambda x: float(x), l.split()))
                         	G.add_node(data[0], x_coord=data[1], y_coord=data[2])
                 #else:
@@ -67,8 +73,10 @@ class RunTSP:
                         q2 = math.cos(lat_u - lat_v)
                         q3 = math.cos(lat_u + lat_v)
                         G.add_edge(u,v, weight=(int)((6378.388*math.acos(.5*((1.0+q1)*q2 - (1.0-q1)*q3))+1.0)))
-        return G
+        #return the graph object and what the known optimal solution is
+        return G, tsp_opt
 
+    #for geo coordinates (don't need to modify this)
     def lat_long(self, G, num):
         pi = 3.141592
         deg = (int)(G.node[num]['x_coord'])
@@ -79,6 +87,7 @@ class RunTSP:
         longitude = pi * (deg + 5.0 * min/3.0) / 180.0
         return latitude,longitude
 
+    #ignore this method, purely for testing purposes
     def testing(self, G):
         p = itertools.permutations(G.nodes())
         for x in p:
@@ -89,6 +98,7 @@ class RunTSP:
             elif temp == 3454:
                 print "eh "
 
+    #ignore this method, purely for testing purposes
     def make_p_graph(self):
         p = nx.Graph()
         for x in range(1,5):
@@ -102,33 +112,35 @@ class RunTSP:
         p.add_edge(2,4,weight=3)
         #print p.edges()
         return p
+
+    #main method. 
     def main(self):
-        optimals = [3323, 6859, 7542, 21282, 6528, 40160]
+        #optimals = [3323, 6859, 7542, 21282, 6528, 40160]
 
         filename = sys.argv[1]
         cutoff_time = int(sys.argv[2])
         algorithm = sys.argv[3]
         #random_seed = sys.argv[4]
         random_seed = 1
-        G = self.create_graph(filename)
+        G, opt_sol = self.create_graph(filename)
 
         #for finding relative error
-        opt_sol = None
-        if filename == 'burma14.tsp':
-            opt_sol = optimals[0]
-        elif filename == 'ulysses16.tsp':
-            opt_sol = optimals[1]
-        elif filename == 'berlin52.tsp':
-            opt_sol = optimals[2]
-        elif filename == 'kroA100.tsp':
-            opt_sol = optimals[3]
-        elif filename == 'ch150.tsp':
-            opt_sol = optimals[4]
-        elif filename == 'gr202.tsp':
-            opt_sol = optimals[5]
-        else:
-            print "You didn't give the right filename, try again"
-            exit()
+        #opt_sol = None
+        #if filename == 'burma14.tsp':
+        #    opt_sol = optimals[0]
+        #elif filename == 'ulysses16.tsp':
+        #    opt_sol = optimals[1]
+        #elif filename == 'berlin52.tsp':
+        #    opt_sol = optimals[2]
+        #elif filename == 'kroA100.tsp':
+        #    opt_sol = optimals[3]
+        #elif filename == 'ch150.tsp':
+        #    opt_sol = optimals[4]
+        #elif filename == 'gr202.tsp':
+        #    opt_sol = optimals[5]
+        #else:
+        #    print "You didn't give the right filename, try again"
+        #    exit()
         #begin testing for 5 algorithms
         #uncomment out whichever ones that you need to test
         #
