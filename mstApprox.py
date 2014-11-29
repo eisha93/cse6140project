@@ -21,4 +21,4 @@ def find_tour(G, oG):
 	for i in range(0, len(nodes)):
 		if i < len(nodes)-1:
 			tsum += oG[nodes[i]][nodes[i+1]]['weight']
-	return tsum
+	return nodes,tsum

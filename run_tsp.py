@@ -10,16 +10,15 @@ import nearestNeighbor as nn
 import branchAndBound as bb
 import hillClimbing as hc
 import mstApprox as mst
+import simAnneal as sa
 import cProfile
 import re
 
 class RunTSP:
     #pass in the direct filename to this method, returns an undirected graph with edges between every pair of cities (don't need to modify this)
     def create_graph(self, filename):
-
         # init graph
         G = nx.Graph()
-
         yes = 1
         #iterates through file to set appropriate variables
         with open(filename, "r") as f: 
@@ -56,8 +55,6 @@ class RunTSP:
                 #else:
                     #print "HALP"
         f.close()
-        
-
         #add the edges (need edge between every pair of nodes)
         for u in G.nodes():
             for v in G.nodes():
@@ -185,14 +182,15 @@ class RunTSP:
             print 'NOW RUNNING MST APPROXIMATION'
             print 'testing ' + filename
             start_mst = time.time()
-            mstApprox_cost = mst.MST_approx_tour(G, trfilename)
+            mst_tour, mst_cost = mst.MST_approx_tour(G, trfilename)
             end_mst = (time.time() - start_mst) #in seconds
-            mstApprox_rel_err = float(abs(mstApprox_cost - opt_sol))/float(opt_sol)
-            #print mstApprox_cost
-            #print mstApprox_rel_err
-            #print end_mst
-            #tour = mst_tour #FIX ME
-            #cost = mst_cost #FIX ME
+            mst_rel_err = float(abs(mst_cost - opt_sol))/float(opt_sol)
+            print 'cost: ' + str(mst_cost)
+            print 'time: ' + str(end_mst)
+            print 'error: ' + str(mst_rel_err)
+            tour = mst_tour #FIX ME
+            cost = mst_cost #FIX ME
+
         elif algorithm == 'nearest_neighbor':
             #Nearest Neighbor approximation
             print 'NOW RUNNING NEAREST NEIGHBOR'
@@ -207,6 +205,7 @@ class RunTSP:
             print "error: " + str(nn_rel_error)
             tour = nn_tour
             cost = nn_cost
+
         elif algorithm == 'hill_climbing':
             #hillClimbing local search
             print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
@@ -221,12 +220,23 @@ class RunTSP:
             print ""
             tour = hc_tour
             cost = hc_cost
+
         elif algorithm == 'simulated_annealing':
-            print "hi"
-            #tour = sa_tour FIX ME
-            #cost = sa_cost FIX ME
+            print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
+            print 'testing' + filename
+            start_sa = time.time()
+            sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol)
+            end_sa = (time.time() - start_sa) # in seconds
+            print 'time: ' + str(end_sa)
+            print 'length ' + str(sa_cost)
+            sa_rel_err = float(abs(sa)cost - opt_sol))/float(opt_sol)
+            print 'err: ' + str(sa_rel_err)
+            print ''
+            tour = sa_tour
+            cost = sa_cost
+
         else:
-            print "you failure enter the correct name for an algorithm"
+            print "you failed enter the correct name for an algorithm"
 
         solfile.write(str(cost)+"\n")
         tour_str = ""
