@@ -10,23 +10,23 @@ def simAnneal(G,trfilename, opt_sol):
 	trfile = open(trfilename, 'w')
 	num_iter = 200
 	iterations = 0
-	best_soln = None
-	best_cost = float("inf")
 	alpha = .99
 	t = 1.0e+300
 	t_end = 0.001
 	emin = opt_sol 
 	curr_soln = list(np.random.permutation(G.nodes()))
+	#initializing first solution
+	best_soln = curr_soln
 	e = bb.find_cost(curr_soln, G)
-
+	best_cost = e
 	all_combs = all_node_combos(G)
 
 	while iterations < num_iter and t > t_end:
 		#alpha = iterations/num_iter
-		T = temp(t,alpha)
+		t = temp(t,alpha)
 		some_neighbor = find_some_neighbor(curr_soln, G, all_combs)
 		energy = bb.find_cost(some_neighbor, G)
-		if energy > e or P(e, energy, T) > random.random():
+		if energy > e or P(e, energy, t) > random.random():
 			curr_soln = some_neighbor
 			best_soln = curr_soln
 			e = energy
