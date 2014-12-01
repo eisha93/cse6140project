@@ -1,5 +1,6 @@
 import numpy as np
 import branchAndBound as bb
+import nearestNeighbor as nn
 import copy
 import time
 import networkx as nx
@@ -8,32 +9,32 @@ import math
 
 def simAnneal(G,trfilename, opt_sol):
 	trfile = open(trfilename, 'w')
-	num_iter = 200
-	iterations = 0
-	alpha = .99
-	t = 1.0e+300
+	alpha = .95
+	t = 1.0e+10 #lower
 	t_end = 0.001
 	emin = opt_sol 
-	curr_soln = list(np.random.permutation(G.nodes()))
+	curr_soln, e = nn.nntour(G, 'fake')
+	#print curr_soln
+	#curr_soln = list(np.random.permutation(G.nodes()))
 	#initializing first solution
 	best_soln = curr_soln
-	e = bb.find_cost(curr_soln, G)
+	#e = bb.find_cost(curr_soln, G)
 	best_cost = e
 	all_combs = all_node_combos(G)
 
-	while iterations < num_iter and t > t_end:
-		#alpha = iterations/num_iter
-		t = temp(t,alpha)
+	while t > t_end:
 		some_neighbor = find_some_neighbor(curr_soln, G, all_combs)
 		energy = bb.find_cost(some_neighbor, G)
-		if energy > e or P(e, energy, t) > random.random():
+		if energy < e or P(e, energy, t) > random.random():
 			curr_soln = some_neighbor
 			best_soln = curr_soln
 			e = energy
 			best_cost = e
-		iterations+= 1
+			#print best_cost
+		t = temp(t,alpha)
 
 	best_soln.append(best_soln[0])
+	#print best_soln
 	return best_soln, best_cost
 
 def all_node_combos(G):
@@ -44,10 +45,16 @@ def all_node_combos(G):
 		for j in range(1,n):
 			if i<j:
 				all_combos.append((i,j))
+	#print all_combos
 	return all_combos
 
 def find_some_neighbor(curr_soln, G, all_combs):
 	neighbors = find_neighbors(curr_soln, G, all_combs)
+	print neighbors
+	ranking = []
+	# for i in neighbors:
+	# 	if ranking == []:
+	# 		ranking.append(i)
 	return random.choice(neighbors)
 
 def find_neighbors(curr_soln, G, all_combs):
