@@ -2,10 +2,11 @@ import numpy as np
 import branchAndBound as bb
 import copy
 import time
-
+import random
 tabu = []
 
-def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_sol, q):
+def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_sol, q, seed):
+	random.seed(seed)
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
@@ -101,7 +102,7 @@ def find_successors(curr_soln, G, all_combs):
 #hill climbing with restart 
 #This method calls hillclimb (above) "num_iter" times -- each time the method returns a locally optimal solution. Calling hillclimb multiple times allows us to not only find a local optimum
 #but greatly increases our chances of finding the globally optimal solution. 
-def hctour(G, trfilename, opt_sol, cutoff_time, q):
+def hctour(G, trfilename, opt_sol, cutoff_time, q, seed):
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	num_iter = 500
@@ -120,12 +121,12 @@ def hctour(G, trfilename, opt_sol, cutoff_time, q):
 		if (time.time()-start_time) >= cutoff_time:
 			return best_soln, best_cost, 'no'
 
-		new_cost,new_soln, q_yes_no = hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, q)
+		new_cost,new_soln, q_yes_no = hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, q, seed)
 		#print new_cost
 
 		#trfile.write(str(best_cost)+"hehe")
 
-		print "almost next iter"
+		#print "almost next iter"
 		#if it finds a better solution than previous solution, reset best solution
 		if best_soln is None:
 			best_soln = new_soln
@@ -138,7 +139,7 @@ def hctour(G, trfilename, opt_sol, cutoff_time, q):
 		iterations += 1
 
 		if q_yes_no == 'yes':
-			print "yes"
+			#print "yes"
 			best_soln.append(best_soln[0])
 			return best_soln, best_cost, q_yes_no
 
