@@ -5,7 +5,7 @@ import time
 
 tabu = []
 
-def hillclimb(G, all_combs, opt_sol, cutoff_time):
+def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_sol, q):
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
@@ -15,32 +15,41 @@ def hillclimb(G, all_combs, opt_sol, cutoff_time):
 	#best_cost = float("inf")
 	#best_soln = None
 	#tabu.append(curr_soln)
-	print opt_sol
-	q = .01 #.8%
+	#print opt_sol
+	#q = .01 #.8%
 	#7733
+	
 	while iterations<maxIter:
 		#print iterations
 		#print "huh2 " + str(curr_soln)
 		
+		if (time.time() - start_time) >= cutoff_time:
+			return curr_cost,curr_soln, 'no'
+
 		#at each step of "climbing the hill" the algorithm looks in its "neighborhood" of the current solution
 		#find_next_soln returns the 'best' soln in the current soln's neighborhood
 		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
-		print temp_cost
+		#print temp_cost
 		#print next_soln
 
 		#ignore for now -- for trace files
 		if temp_cost <= (q*opt_sol) + opt_sol: 
-			#print "LOLOLOLOL"
+			return curr_cost, curr_soln, 'yes'
 
 		if temp_cost >= curr_cost:
-			return curr_cost,curr_soln #meaning we have reached the "peak"
+			return curr_cost,curr_soln, 'no' #meaning we have reached the "peak"
+
 
 		curr_cost = temp_cost
 		curr_soln = next_soln
 
+		if curr_cost < curr_best_sol:
+			trfile.write(str(time.time() - start_time) + ", " + str(curr_cost)+"\n")
+			curr_best_sol = curr_cost
+			#trfile.write("HAY")
 		iterations += 1
 	#print str(curr_soln)
-	return curr_cost,curr_soln
+	return curr_cost,curr_soln, 'no'
 
 #given a current solution, returns the best solution in its neighborhood
 def find_next_soln(curr_soln, G, all_combs):
@@ -92,10 +101,10 @@ def find_successors(curr_soln, G, all_combs):
 #hill climbing with restart 
 #This method calls hillclimb (above) "num_iter" times -- each time the method returns a locally optimal solution. Calling hillclimb multiple times allows us to not only find a local optimum
 #but greatly increases our chances of finding the globally optimal solution. 
-def hctour(G, trfilename, opt_sol):
+def hctour(G, trfilename, opt_sol, cutoff_time, q):
 	trfile = open(trfilename, 'w')
-	#start_time = time.time()
-	num_iter = 50
+	start_time = time.time()
+	num_iter = 500
 	iterations = 0
 
 	best_soln = None
@@ -103,13 +112,20 @@ def hctour(G, trfilename, opt_sol):
 
 	#gets all the possible pairs of nodes (1,2),(1,3),...etc -- used in 2-opt exchange
 	all_combs = all_combinations(G)
-
+	curr_best_sol = best_soln
+	q_yes_no = None
 	#calls hillclimb multiple times to hopefully find optimal solution
 	while iterations < num_iter:
 		#print "hi" + str(iterations)
-		new_cost,new_soln = hillclimb(G, all_combs, opt_sol)
-		print new_cost
+		if (time.time()-start_time) >= cutoff_time:
+			return best_soln, best_cost, 'no'
 
+		new_cost,new_soln, q_yes_no = hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, q)
+		#print new_cost
+
+		#trfile.write(str(best_cost)+"hehe")
+
+		print "almost next iter"
 		#if it finds a better solution than previous solution, reset best solution
 		if best_soln is None:
 			best_soln = new_soln
@@ -121,7 +137,13 @@ def hctour(G, trfilename, opt_sol):
 			#trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 		iterations += 1
 
+		if q_yes_no == 'yes':
+			print "yes"
+			best_soln.append(best_soln[0])
+			return best_soln, best_cost, q_yes_no
+
+
 	#makes it a cycle
 	best_soln.append(best_soln[0])
 
-	return best_soln, best_cost
+	return best_soln, best_cost, q_yes_no

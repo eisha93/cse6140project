@@ -118,6 +118,7 @@ class RunTSP:
 		cutoff_time = int(sys.argv[2])
 		algorithm = sys.argv[3]
 		#random_seed = sys.argv[4]
+		q = float(sys.argv[4])
 		random_seed = 1
 		G, opt_sol = self.create_graph(filename)
 
@@ -211,15 +212,16 @@ class RunTSP:
 			print 'NOW RUNNING HILL CLIMBING LOCAL SEARCH'
 			print 'testing ' + filename
 			start_hc = time.time()
-			hc_tour,hc_cost = hc.hctour(G, trfilename, opt_sol) #hill climbing
+			hc_tour,hc_cost, q_yes_no = hc.hctour(G, trfilename, opt_sol, cutoff_time, q) #hill climbing
 			end_hc = (time.time() - start_hc) #in seconds
-			print "time: " + str(end_hc)
-			print "length: " + str(hc_cost)
+			#print "time: " + str(end_hc)
+			#print "length: " + str(hc_cost)
 			hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
-			print "err: " + str(hc_rel_err)
-			print ""
+			#print "err: " + str(hc_rel_err)
+			#print ""
 			tour = hc_tour
 			cost = hc_cost
+			print q_yes_no
 
 		elif algorithm == 'simulated_annealing':
 			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
