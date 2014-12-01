@@ -10,24 +10,26 @@ def bbtour(G, cutoff_time, trfilename):
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	i=0
-	#best = list(np.random.permutation(G.nodes()))
-	#bcost = find_cost(best,G)
-	#while i<50:
-#		nodes = list(np.random.permutation(G.nodes()))
-#		ncost = find_cost(nodes,G)
-#		if ncost<bcost:
-#			best = nodes
-#			bcost = ncost
-#		i+=1
+	best = list(np.random.permutation(G.nodes()))
+	bcost = find_cost(best,G)
+	while i<50:
+		nodes = list(np.random.permutation(G.nodes()))
+		ncost = find_cost(nodes,G)
+		if ncost<bcost:
+			best = nodes
+			bcost = ncost
+		i+=1
 	F = [] #list of solutions (a partial solution is a list?)
-	#best_cost = find_cost(nodes, G)
-	#best_soln = copy.deepcopy(nodes)
-	#best_soln.append(nodes[0]) #make it a cycle?
+	#best_cost = find_cost(best, G)
+	best_soln = best
+	best_soln.append(nodes[0]) #make it a cycle?
+	best_cost = bcost
 	#best_cost = find_cost(nodes,G)
 	#best_soln = copy.deepcopy(nodes)
 	#best_soln.append(best_soln[0])
 	
-	best_soln, best_cost = nn.nntour(G)
+	#best_soln, best_cost = nn.nntour(G)
+
 	trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 
 	print best_soln
@@ -61,7 +63,10 @@ def bbtour(G, cutoff_time, trfilename):
 			#call the choose that picks longest partial soln... 
 		#	partial_soln = choose(F, G)
 		
-		partial_soln = choose_lowerbound(F,G)
+		choose = choose_minonetree
+		lower_bound = lower_bound_minonetree
+
+		partial_soln = choose(F,G)
 		#print "WTF " + str(partial_soln)
 		#print partial_soln
 		F.remove(partial_soln)
@@ -85,12 +90,12 @@ def bbtour(G, cutoff_time, trfilename):
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				#return best_cost,best_soln
 				#print "best cost is " + str(best_cost) + " size F is " + str(len(F))
-				print str(best_soln) + ", " + str(best_cost)
+				print str(time.time()-start_time) + " " + str(cutoff_time) + " " + str(best_soln) + ", " + str(best_cost)
 			else:
-				if lower_bound_mst(config, G) < best_cost:
+				if lower_bound(config, G) < best_cost:
 					#print "F: " + str(F)
 					F.append(config)
-					print "lb is " + str(lower_bound_minonetree(config, G)) + " config is " + str(config)
+					#print "lb is " + str(lower_bound(config, G)) + " config is " + str(config)
 				#else:
 					#print best_soln
 					#print best_cost
@@ -238,8 +243,8 @@ def lower_bound_minonetree(soln, G):
 
 	return path
 
-#choose best config in list of partial solns based off of partial solns in F
-def choose(F, G):
+#choose best config in list of partial solns based off of length partial solns in F
+def choose_length(F, G):
 	best = None
 	#print "F choose: " + str(F)
 	cost = float("inf")
@@ -270,6 +275,7 @@ def choose(F, G):
 	#print "in choose: " + str(best)
 	return best
 
+#cost of existing path + minimum rest of path
 def lower_bound_easy(soln, G):
 	count = 0
 	path = 0
@@ -293,33 +299,6 @@ def lower_bound_easy(soln, G):
 		min_node = min(G_nodes, key = lambda u: G.edge[node][u]['weight'])
 		path += G.edge[node][min_node]['weight']
 		G_nodes.append(node)
-
-	return path
-
-def lower_bound_nn(soln, G):
-	count = 0
-	path = 0
-	all_nodes = G.nodes()
-	G_nodes = G.nodes()
-	#lower bound = partial path we have
-	for node in soln:
-		all_nodes.remove(node)
-		G_nodes.remove(node)
-		if count == 0:
-			count = 1
-			i = node
-			#call choose_lowe
-		else:
-			path += G.edge[i][node]['weight']
-			i = node
-
-	last = soln[-1]
-
-	while all_nodes:
-		min_node = min(all_nodes, key=lambda u: G.edge[last][u]['weight'])
-		path += G.edge[min_node][last]['weight']
-		all_nodes.remove(min_node)
-		last = min_node
 
 	return path
 
