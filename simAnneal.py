@@ -7,14 +7,13 @@ import networkx as nx
 import random
 import math
 
-def simAnneal(G,trfilename, opt_sol, seed):
+def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 	random.seed(seed)
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	alpha = .95
 	t = 1.0e+10 #lower
 	t_end = 0.001
-	emin = opt_sol 
 	curr_soln, e = nn.nntour(G, 'fake')
 	#print curr_soln
 	#curr_soln = list(np.random.permutation(G.nodes()))
@@ -25,16 +24,19 @@ def simAnneal(G,trfilename, opt_sol, seed):
 	all_combs = all_node_combos(G)
 
 	while t > t_end:
-		some_neighbor = find_some_neighbor(curr_soln, G, all_combs)
-		energy = bb.find_cost(some_neighbor, G)
-		if energy < e or P(e, energy, t) > random.random():
-			curr_soln = some_neighbor
-			best_soln = curr_soln
-			e = energy
-			best_cost = e
-			trfile.write(str(time.time() - start_time) + ", " + str(best_soln)+"\n")
-			#print best_cost
-		t = temp(t,alpha)
+		if (time.time()-start_time) >= cutoff_time:
+			return best_soln, best_cost
+		else:
+			some_neighbor = find_some_neighbor(curr_soln, G, all_combs)
+			energy = bb.find_cost(some_neighbor, G)
+			if energy < e or P(e, energy, t) > random.random():
+				curr_soln = some_neighbor
+				best_soln = curr_soln
+				e = energy
+				best_cost = e
+				trfile.write(str(time.time() - start_time) + ", " + str(best_soln)+"\n")
+				#print best_cost
+			t = temp(t,alpha)
 
 	best_soln.append(best_soln[0])
 	#print best_soln
@@ -53,7 +55,7 @@ def all_node_combos(G):
 
 def find_some_neighbor(curr_soln, G, all_combs):
 	neighbors = find_neighbors(curr_soln, G, all_combs)
-	print neighbors
+	#print neighbors
 	ranking = []
 	# for i in neighbors:
 	# 	if ranking == []:

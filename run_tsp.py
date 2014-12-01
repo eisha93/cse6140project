@@ -185,7 +185,7 @@ class RunTSP:
 			print 'NOW RUNNING MST APPROXIMATION'
 			print 'testing ' + filename
 			start_mst = time.time()
-			mst_tour, mst_cost = mst.MST_approx_tour(G, trfilename)
+			mst_tour, mst_cost = mst.MST_approx_tour(G, trfilename, cutoff_time)
 			end_mst = (time.time() - start_mst) #in seconds
 			mst_rel_err = float(abs(mst_cost - opt_sol))/float(opt_sol)
 			print 'cost: ' + str(mst_cost)
@@ -229,7 +229,7 @@ class RunTSP:
 			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
 			print 'testing' + filename
 			start_sa = time.time()
-			sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol, random_seed)
+			sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed)
 			end_sa = (time.time() - start_sa) # in seconds
 			print 'time: ' + str(end_sa)
 			print 'length ' + str(sa_cost)
