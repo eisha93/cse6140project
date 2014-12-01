@@ -7,7 +7,7 @@ import networkx as nx
 import random
 import math
 
-def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
+def simAnneal(G,trfilename, opt_sol, cutoff_time, seed, q):
 	random.seed(seed)
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
@@ -22,7 +22,6 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 	#e = bb.find_cost(curr_soln, G)
 	best_cost = e
 	all_combs = all_node_combos(G)
-
 	while t > t_end:
 		if (time.time()-start_time) >= cutoff_time:
 			return best_soln, best_cost
@@ -35,12 +34,14 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 				e = energy
 				best_cost = e
 				trfile.write(str(time.time() - start_time) + ", " + str(best_soln)+"\n")
+				if energy <= (q*opt_sol) + opt_sol:
+					return best_soln, best_cost, 'yes'
 				#print best_cost
 			t = temp(t,alpha)
 
 	best_soln.append(best_soln[0])
 	#print best_soln
-	return best_soln, best_cost
+	return best_soln, best_cost, 'no'
 
 def all_node_combos(G):
 	all_combos = []
