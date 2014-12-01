@@ -27,7 +27,7 @@ def find_tour(G, oG, sTime, trfile, cutoff_time):
 			if (time.time() - start_time) >= cutoff_time:
 				return p_sol, tsum
 			else:
-				p_sol.append(i)
+				p_sol.append(nodes[i])
 				tsum += oG[nodes[i]][nodes[i+1]]['weight']
 				trfile.write(str(time.time() - sTime) + ', ' + str(tsum) + '\n')
 	return nodes,tsum
