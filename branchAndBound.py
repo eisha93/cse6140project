@@ -32,8 +32,8 @@ def bbtour(G, cutoff_time, trfilename):
 
 	trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 
-	print best_soln
-	print best_cost
+	#print best_soln
+	#print best_cost
 	#return -1
 	#add each node as a "partial" solution to F? as in you want to look at all possible
 	#solns for all possible nodes right?
@@ -90,7 +90,7 @@ def bbtour(G, cutoff_time, trfilename):
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				#return best_cost,best_soln
 				#print "best cost is " + str(best_cost) + " size F is " + str(len(F))
-				print str(time.time()-start_time) + " " + str(cutoff_time) + " " + str(best_soln) + ", " + str(best_cost)
+				#print str(time.time()-start_time) + " " + str(cutoff_time) + " " + str(best_soln) + ", " + str(best_cost)
 			else:
 				if lower_bound(config, G) < best_cost:
 					#print "F: " + str(F)

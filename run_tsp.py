@@ -121,7 +121,7 @@ class RunTSP:
 		#q = float(sys.argv[4])
 		random_seed = 1
 		G, opt_sol = self.create_graph(filename)
-
+		q = -1
 		#for finding relative error
 		#opt_sol = None
 		#if filename == 'burma14.tsp':
@@ -171,11 +171,13 @@ class RunTSP:
 			#    tour = ""
 			#    for node in bb_tour:
 			#        tour += str(node)
-
+			print "time: " + str(end_bb)
+			print "length: " + str(bb_cost)
+			#print "err: " + str()
 				#print bb_cost
 				#print bb_tour
 			bb_rel_err = float(abs(bb_cost - opt_sol))/float(opt_sol)
-			print bb_rel_err
+			print "err: " + str(bb_rel_err)
 			tour = bb_tour
 			cost = bb_cost
 		elif algorithm == 'mst_approx':
@@ -214,14 +216,14 @@ class RunTSP:
 			start_hc = time.time()
 			hc_tour,hc_cost, q_yes_no = hc.hctour(G, trfilename, opt_sol, cutoff_time, q, random_seed) #hill climbing
 			end_hc = (time.time() - start_hc) #in seconds
-			#print "time: " + str(end_hc)
-			#print "length: " + str(hc_cost)
+			print "time: " + str(end_hc)
+			print "length: " + str(hc_cost)
 			hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
-			#print "err: " + str(hc_rel_err)
+			print "err: " + str(hc_rel_err)
 			#print ""
 			tour = hc_tour
 			cost = hc_cost
-			print q_yes_no
+			#print q_yes_no
 
 		elif algorithm == 'simulated_annealing':
 			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
