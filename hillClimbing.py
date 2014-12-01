@@ -5,7 +5,7 @@ import time
 
 tabu = []
 
-def hillclimb(G, all_combs, opt_sol):
+def hillclimb(G, all_combs, opt_sol, cutoff_time):
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
@@ -15,8 +15,8 @@ def hillclimb(G, all_combs, opt_sol):
 	#best_cost = float("inf")
 	#best_soln = None
 	#tabu.append(curr_soln)
-
-	q = .008 #.8%
+	print opt_sol
+	q = .01 #.8%
 	#7733
 	while iterations<maxIter:
 		#print iterations
@@ -25,11 +25,11 @@ def hillclimb(G, all_combs, opt_sol):
 		#at each step of "climbing the hill" the algorithm looks in its "neighborhood" of the current solution
 		#find_next_soln returns the 'best' soln in the current soln's neighborhood
 		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
-		#print temp_cost
+		print temp_cost
 		#print next_soln
 
 		#ignore for now -- for trace files
-		#if temp_cost <= (q*opt_sol) + opt_sol: 
+		if temp_cost <= (q*opt_sol) + opt_sol: 
 			#print "LOLOLOLOL"
 
 		if temp_cost >= curr_cost:
