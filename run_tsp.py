@@ -189,8 +189,8 @@ class RunTSP:
 			print 'cost: ' + str(mst_cost)
 			print 'time: ' + str(end_mst)
 			print 'error: ' + str(mst_rel_err)
-			tour = mst_tour #FIX ME
-			cost = mst_cost #FIX ME
+			tour = mst_tour 
+			cost = mst_cost 
 
 		elif algorithm == 'nearest_neighbor':
 			#Nearest Neighbor approximation
@@ -227,7 +227,7 @@ class RunTSP:
 			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
 			print 'testing' + filename
 			start_sa = time.time()
-			sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed)
+			sa_tour, sa_cost, q_y_n = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed, q)
 			end_sa = (time.time() - start_sa) # in seconds
 			print 'time: ' + str(end_sa)
 			print 'length ' + str(sa_cost)
