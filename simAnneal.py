@@ -7,8 +7,10 @@ import networkx as nx
 import random
 import math
 
-def simAnneal(G,trfilename, opt_sol):
+def simAnneal(G,trfilename, opt_sol, seed):
+	random.seed(seed)
 	trfile = open(trfilename, 'w')
+	start_time = time.time()
 	alpha = .95
 	t = 1.0e+10 #lower
 	t_end = 0.001
@@ -30,6 +32,7 @@ def simAnneal(G,trfilename, opt_sol):
 			best_soln = curr_soln
 			e = energy
 			best_cost = e
+			trfile.write(str(time.time() - start_time) + ", " + str(best_soln)+"\n")
 			#print best_cost
 		t = temp(t,alpha)
 
