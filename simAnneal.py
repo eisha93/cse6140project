@@ -33,14 +33,13 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed, q):
 				best_soln = curr_soln
 				e = energy
 				best_cost = e
-				trfile.write(str(time.time() - start_time) + ", " + str(best_soln)+"\n")
+				trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				if energy <= (q*opt_sol) + opt_sol:
 					return best_soln, best_cost, 'yes'
 				#print best_cost
 			t = temp(t,alpha)
 
 	best_soln.append(best_soln[0])
-	#print best_soln
 	return best_soln, best_cost, 'no'
 
 def all_node_combos(G):

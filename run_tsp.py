@@ -119,7 +119,7 @@ class RunTSP:
 		algorithm = sys.argv[3]
 		random_seed = sys.argv[4]
 		#q = float(sys.argv[4])
-		random_seed = 1
+		#random_seed = 1
 		G, opt_sol = self.create_graph(filename)
 		q = -1
 		#for finding relative error
