@@ -1,0 +1,74 @@
+hill climbing
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing burma14.tsp
+time: 5.73720192909
+length: 3323
+err: 0.0
+--
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing ulysses16.tsp
+time: 10.5651500225
+length: 6870
+err: 0.0016037323225
+--
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing berlin52.tsp
+time: 1812.7143631
+length: 7852.0
+err: 0.0411031556616
+--
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing kroA100.tsp
+time: 3600.21055794
+length: 22151.0
+err: 0.0408326285124
+--
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing ch150.tsp
+time: 3600.48203707
+length: 7338.0
+err: 0.124080882353
+--
+NOW RUNNING HILL CLIMBING LOCAL SEARCH
+testing gr202.tsp
+time: 3600.16218495
+length: 45609
+err: 0.135682270916
+--
+--
+branch and bound
+NOW RUNNING BRANCH AND BOUND
+testing burma14.tsp
+time: 2718.97848988
+length: 3323
+err: 0.0
+--
+NOW RUNNING BRANCH AND BOUND
+testing ulysses16.tsp
+time: 3600.18485117
+length: 7006
+err: 0.0214316955824
+--
+NOW RUNNING BRANCH AND BOUND
+testing berlin52.tsp
+time: 3615.61480689
+length: 27001.0
+err: 2.58008485813
+--
+NOW RUNNING BRANCH AND BOUND
+testing kroA100.tsp
+time: 3614.37065101
+length: 149056.0
+err: 6.00385302133
+--
+NOW RUNNING BRANCH AND BOUND
+testing ch150.tsp
+time: 4858.79432797
+length: 47977.0
+err: 6.34941789216
+--
+NOW RUNNING BRANCH AND BOUND
+testing gr202.tsp
+time: 3607.417454
+length: 246539
+err: 5.13891932271

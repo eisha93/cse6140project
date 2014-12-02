@@ -63,8 +63,8 @@ def bbtour(G, cutoff_time, trfilename):
 			#call the choose that picks longest partial soln... 
 		#	partial_soln = choose(F, G)
 		
-		choose = choose_minonetree
-		lower_bound = lower_bound_minonetree
+		choose = choose_length
+		lower_bound = lower_bound_easy
 
 		partial_soln = choose(F,G)
 		#print "WTF " + str(partial_soln)
@@ -72,22 +72,25 @@ def bbtour(G, cutoff_time, trfilename):
 		F.remove(partial_soln)
 
 		new_configs = expand(partial_soln, G) #do I ever return an empty list
-		
+		#print partial_soln
 		for config in new_configs:
 			if (time.time() - start_time) >= cutoff_time:
 				return best_soln, best_cost
 			#'check' new config
 			is_soln = check(config, G)
 			if is_soln == 1:
-				first = 1
+				#return -222
+				#return -1
 				#rest = 1
 				temp = find_cost(config, G)
-				
+				#print best_cost
+				#return -1
 				if temp < best_cost:
 					best_soln = copy.deepcopy(config)
 					best_soln.append(config[0])
 					best_cost = temp #make it a cycle
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+				#print best_cost
 				#return best_cost,best_soln
 				#print "best cost is " + str(best_cost) + " size F is " + str(len(F))
 				#print str(time.time()-start_time) + " " + str(cutoff_time) + " " + str(best_soln) + ", " + str(best_cost)
