@@ -10,7 +10,7 @@ def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_
 	curr_soln = list(np.random.permutation(G.nodes()))
 	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
-	maxIter = 1000000
+	maxIter = 5000
 	iterations = 0
 	#print curr_cost
 	#best_cost = float("inf")
@@ -105,7 +105,7 @@ def find_successors(curr_soln, G, all_combs):
 def hctour(G, trfilename, opt_sol, cutoff_time, q, seed):
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
-	num_iter = 500
+	num_iter = 50
 	iterations = 0
 
 	best_soln = None
