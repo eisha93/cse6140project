@@ -12,7 +12,7 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed, q):
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	alpha = .95
-	t = 1.0e+10 #lower
+	t = 1.0e+20 #lower
 	t_end = 0.001
 	curr_soln, e = nn.nntour(G, 'fake')
 	#print curr_soln
@@ -21,19 +21,23 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed, q):
 	best_soln = curr_soln
 	#e = bb.find_cost(curr_soln, G)
 	best_cost = e
+	trace_cost = e
 	all_combs = all_node_combos(G)
 	while t > t_end:
 		if (time.time()-start_time) >= cutoff_time:
+			print 'ran out of time'
 			return best_soln, best_cost
 		else:
-			some_neighbor = find_some_neighbor(curr_soln, G, all_combs)
-			energy = bb.find_cost(some_neighbor, G)
+			some_neighbor, energy = find_some_neighbor(curr_soln, G, all_combs)
 			if energy < e or P(e, energy, t) > random.random():
 				curr_soln = some_neighbor
 				best_soln = curr_soln
 				e = energy
 				best_cost = e
-				trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+				#print best_cost
+				if best_cost < trace_cost:
+					trace_cost = best_cost
+					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				if energy <= (q*opt_sol) + opt_sol:
 					return best_soln, best_cost, 'yes'
 				#print best_cost
@@ -55,14 +59,20 @@ def all_node_combos(G):
 
 def find_some_neighbor(curr_soln, G, all_combs):
 	neighbors = find_neighbors(curr_soln, G, all_combs)
-	#print neighbors
-	ranking = []
-	# for i in neighbors:
-	# 	if ranking == []:
-	# 		ranking.append(i)
-	return random.choice(neighbors)
+	k = int(round(.3*len(neighbors),0))
+	nays = []
+	for n in neighbors:
+		rank = bb.find_cost(n, G)
+		nays.append((n,rank))
+	nays = sorted(nays, key = lambda nb: nb[1])
+	#print nays[:k]
+	random_n = random.choice(nays[:k])
+	r_n = random_n[0]
+	cost_n = random_n[1]
+	return r_n, cost_n
 
 def find_neighbors(curr_soln, G, all_combs):
+	#print all_combs
 	#given a current solution find its "neighbors"
 	#use 2-OPT to find all possible variations of the curr_soln --> find all possible variations of swapping
 	successors = []
