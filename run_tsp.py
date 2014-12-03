@@ -229,7 +229,7 @@ class RunTSP:
 			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
 			print 'testing' + filename
 			start_sa = time.time()
-			sa_tour, sa_cost, q_y_n = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed, q)
+			sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed)
 			end_sa = (time.time() - start_sa) # in seconds
 			print 'time: ' + str(end_sa)
 			print 'length ' + str(sa_cost)
