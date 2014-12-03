@@ -11,31 +11,32 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 	random.seed(seed)
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
-	alpha = .95
-	t = 1.0e+20 #lower
+	alpha = .85
+	t = 1.0e+10 #lower
 	t_end = 0.001
 	curr_soln, e = nn.nntour(G, 'fake')
 	#print curr_soln
-	#curr_soln = list(np.random.permutation(G.nodes()))
 	#initializing first solution
 	best_soln = curr_soln
-	#e = bb.find_cost(curr_soln, G)
 	best_cost = e
 	trace_cost = e
+	trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
+
 	all_combs = all_node_combos(G)
+	print best_cost
 	while t > t_end:
 		if (time.time()-start_time) >= cutoff_time:
 			print 'ran out of time'
 			return best_soln, best_cost
 		else:
-			some_neighbor, energy = find_some_neighbor(curr_soln, G, all_combs)
-			if energy < e or P(e, energy, t) > random.random():
+			some_neighbor, n_cost = find_some_neighbor(curr_soln, G, all_combs)
+			if n_cost < e or P(e, n_cost, t) > random.random():
 				curr_soln = some_neighbor
 				best_soln = curr_soln
-				e = energy
+				e = n_cost
 				best_cost = e
-				#print best_cost
-				if best_cost < trace_cost:
+				print best_cost
+				if best_cost <= trace_cost:
 					trace_cost = best_cost
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				#print best_cost
@@ -57,16 +58,23 @@ def all_node_combos(G):
 
 def find_some_neighbor(curr_soln, G, all_combs):
 	neighbors = find_neighbors(curr_soln, G, all_combs)
-	k = int(round(.3*len(neighbors),0))
-	nays = []
+	nays = {}
 	for n in neighbors:
 		rank = bb.find_cost(n, G)
-		nays.append((n,rank))
-	nays = sorted(nays, key = lambda nb: nb[1])
-	#print nays[:k]
-	random_n = random.choice(nays[:k])
-	r_n = random_n[0]
-	cost_n = random_n[1]
+		if rank not in nays:
+			#print'havent seen before'
+			nays[rank] = n
+	keylist = nays.keys()
+	k = int(round(.03*len(keylist),0))
+	keylist = sorted(keylist)
+	# print keylist
+	#nays = sorted(nays, key=nays.get)
+	#print nays
+	# print keylist[:k]
+	random_n = random.choice(keylist[:k])
+	r_n = nays[random_n]
+	cost_n = random_n
+	#print cost_n
 	return r_n, cost_n
 
 def find_neighbors(curr_soln, G, all_combs):
@@ -90,8 +98,9 @@ def temp(start_temp,alpha):
 	return T
 
 def P(prev_score, next_score, temp):
-	if next_score > prev_score:
-		return 1.0
-	else:
-		return math.exp( -abs(next_score-prev_score)/temp)
+	# if next_score < prev_score:
+	# 	return 1.0
+	# else:
+	print math.exp( -abs(next_score-prev_score)/temp)
+	return math.exp( -abs(next_score-prev_score)/temp)
 
