@@ -20,12 +20,12 @@ echo "branch and bound"
 #echo "--"
 #python run_tsp.py ulysses16.tsp 3600 branch_and_bound 154
 #echo "--"
-python run_tsp.py berlin52.tsp 7200 branch_and_bound 83
+python run_tsp.py berlin52.tsp 18000 branch_and_bound 83
 echo "--"
-python run_tsp.py kroA100.tsp 7200 branch_and_bound 44
+python run_tsp.py kroA100.tsp 18000 branch_and_bound 44
 echo "--"
-python run_tsp.py ch150.tsp 7200 branch_and_bound 3333
+python run_tsp.py ch150.tsp 18000 branch_and_bound 3333
 echo "--"
-python run_tsp.py gr202.tsp 7200 branch_and_bound 12345
+python run_tsp.py gr202.tsp 18000 branch_and_bound 12345
 echo "--"
 
