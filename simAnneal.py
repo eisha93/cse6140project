@@ -36,7 +36,7 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 				e = n_cost
 				best_cost = e
 				print best_cost
-				if best_cost <= trace_cost:
+				if best_cost < trace_cost:
 					trace_cost = best_cost
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 				#print best_cost

@@ -72,3 +72,30 @@ testing gr202.tsp
 time: 3607.417454
 length: 246539
 err: 5.13891932271
+
+
+branch and bound
+NOW RUNNING BRANCH AND BOUND
+testing berlin52.tsp
+time: 3600.00040102
+length: 24136.0
+err: 2.20021214532
+--
+NOW RUNNING BRANCH AND BOUND
+testing kroA100.tsp
+time: 3600.00263405
+length: 146671.0
+err: 5.89178648623
+--
+NOW RUNNING BRANCH AND BOUND
+testing ch150.tsp
+time: 3600.00445604
+length: 49684.0
+err: 6.61090686275
+--
+NOW RUNNING BRANCH AND BOUND
+testing gr202.tsp
+time: 3600.01080203
+length: 254394
+err: 5.33451195219
+--

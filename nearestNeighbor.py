@@ -14,7 +14,6 @@ import time
 def nntour(G, trfilename):
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
-	#why don't you work OH BUT YOU DO
 
 	best_tour = None
 	best_cost = float("inf")
@@ -30,13 +29,8 @@ def nntour(G, trfilename):
 		while not_visited:
 			min_node = min(not_visited, key = lambda u: G.edge[visited[-1]][u]['weight'])
 			tour += G.edge[visited[-1]][min_node]['weight']
-			assert(G.edge[visited[-1]][min_node]['weight'] > 0)
-			#if node == 3:
-				#print "adding" + str(G.edge[visited[-1]][min_node]['weight'])
 			visited.append(min_node)
-			assert(min_node in visited)
 			not_visited.remove(min_node)
-			assert(min_node not in not_visited)
 		tour += G.edge[visited[-1]][visited[0]]['weight'] #add the cost to get back to the beginning cuz its a cycleeee
 		visited.append(visited[0]) #make it a cycle????
 
