@@ -25,8 +25,8 @@ cutoff_time = 1800
 for i in range(10):
 	trfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(i+1) + ".trace"
 	start_hc = time.time()
-	hc_tour, hc_cost, q_yes_no = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, seeds[i], q)
-	datafile.write(str(q) + "," + str(cutoff_time) + "," + str(i+1) + "," + str(q_yes_no) + "\n")
+	hc_tour, hc_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, seeds[i])
+	datafile.write(str(q) + "," + str(cutoff_time) + "," + str(i+1) + "," + "\n")
 	print i
 
 G, opt_sol = rt.create_graph('gr202.tsp')
@@ -46,6 +46,6 @@ next = 1
 for i in range(10):
 	trfilename = filename[:(len(filename)-4)] + "_" + algorithm + "_" + str(cutoff_time) + "_" + str(i+1) + ".trace"
 	start_hc = time.time()
-	hc_tour, hc_cost, q_yes_no = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, seeds[i], q)
-	datafile.write(str(q) + "," + str(cutoff_time) + "," + str(i+1) + "," + str(q_yes_no) + "\n")
+	hc_tour, hc_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, seeds[i])
+	datafile.write(str(q) + "," + str(cutoff_time) + "," + str(i+1) + ","+ "\n")
 	print i

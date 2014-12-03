@@ -23,7 +23,7 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 	trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
 
 	all_combs = all_node_combos(G)
-	print best_cost
+	#print best_cost
 	while t > t_end:
 		if (time.time()-start_time) >= cutoff_time:
 			print 'ran out of time'
@@ -35,7 +35,7 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 				best_soln = curr_soln
 				e = n_cost
 				best_cost = e
-				print best_cost
+				#print best_cost
 				if best_cost < trace_cost:
 					trace_cost = best_cost
 					trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
@@ -101,6 +101,6 @@ def P(prev_score, next_score, temp):
 	# if next_score < prev_score:
 	# 	return 1.0
 	# else:
-	print math.exp( -abs(next_score-prev_score)/temp)
+	#print math.exp( -abs(next_score-prev_score)/temp)
 	return math.exp( -abs(next_score-prev_score)/temp)
 
