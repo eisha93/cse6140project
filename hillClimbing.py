@@ -1,3 +1,4 @@
+"""This file performs a hill climbing iterated local search on the given input graph."""
 import numpy as np
 import branchAndBound as bb
 import copy
@@ -5,41 +6,62 @@ import time
 import random
 tabu = []
 
-def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_sol, q, seed):
+#hill climbing with restart 
+#This method calls hillclimb (above) "num_iter" times -- each time the method returns a locally optimal solution. Calling hillclimb multiple times allows us to not only find a local optimum
+#but greatly increases our chances of finding the globally optimal solution. 
+def hctour(G, trfilename, opt_sol, cutoff_time, seed):
+	"""Hill climbing with restart - calls hillclimb() 'num_iter' times, each time the method returns a locally optimal solution. Since we call hillclimb() multiple times, we
+	greatly increase our chances of finding the globally optimal solution."""
+	trfile = open(trfilename, 'w')
+	start_time = time.time()
+	num_iter = 50
+	iterations = 0
+
+	best_soln = None
+	best_cost = float("inf")
+
+	#gets all the possible pairs of nodes (1,2),(1,3) -- used in 2-opt exchange
+	all_combs = all_combinations(G)
+	curr_best_sol = best_soln
+
+	#calls hillclimb multiple times to find globally optimal solution
+	while iterations < num_iter:
+		if (time.time()-start_time) >= cutoff_time:
+			return best_soln, best_cost, 'no'
+
+		new_cost,new_soln= hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, seed)
+
+		#if it finds a better solution than previous solution, reset best solution
+		if best_soln is None:
+			best_soln = new_soln
+			best_cost = new_cost
+		if new_cost < best_cost:
+			best_cost = new_cost
+			best_soln = new_soln
+		iterations += 1
+
+	#makes it a cycle
+	best_soln.append(best_soln[0])
+
+	return best_soln, best_cost
+
+def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_sol, seed):
+	"""Performs actual hill climbing to find most likely what will be a locally optimal solution, given a random initial solution."""
 	random.seed(seed)
 	curr_soln = list(np.random.permutation(G.nodes()))
-	#print "huh " + str(curr_soln)
 	curr_cost = bb.find_cost(curr_soln, G)
 	maxIter = 5000
 	iterations = 0
-	#print curr_cost
-	#best_cost = float("inf")
-	#best_soln = None
-	#tabu.append(curr_soln)
-	#print opt_sol
-	#q = .01 #.8%
-	#7733
 	
 	while iterations<maxIter:
-		#print iterations
-		#print "huh2 " + str(curr_soln)
-		
 		if (time.time() - start_time) >= cutoff_time:
-			return curr_cost,curr_soln, 'no'
+			return curr_cost,curr_soln
 
-		#at each step of "climbing the hill" the algorithm looks in its "neighborhood" of the current solution
-		#find_next_soln returns the 'best' soln in the current soln's neighborhood
+		#at each step of "climbing the hill" the algorithm looks in its "neighborhood" of the current solution; find_next_soln returns the 'best' soln in the current soln's neighborhood
 		temp_cost, next_soln = find_next_soln(curr_soln, G, all_combs)
-		#print temp_cost
-		#print next_soln
-
-		#ignore for now -- for trace files
-		if temp_cost <= (q*opt_sol) + opt_sol: 
-			return curr_cost, curr_soln, 'yes'
 
 		if temp_cost >= curr_cost:
-			return curr_cost,curr_soln, 'no' #meaning we have reached the "peak"
-
+			return curr_cost,curr_soln #meaning we have reached the "peak" in the space of all solutions
 
 		curr_cost = temp_cost
 		curr_soln = next_soln
@@ -47,14 +69,12 @@ def hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, curr_best_
 		if curr_cost < curr_best_sol:
 			trfile.write(str(time.time() - start_time) + ", " + str(curr_cost)+"\n")
 			curr_best_sol = curr_cost
-			#trfile.write("HAY")
 		iterations += 1
-	#print str(curr_soln)
-	return curr_cost,curr_soln, 'no'
+	return curr_cost,curr_soln
 
-#given a current solution, returns the best solution in its neighborhood
 def find_next_soln(curr_soln, G, all_combs):
-	#find_successors uses 2opt exchange to return the neighborhood of all possible solutions obtained by reversing some part of the current solutions route
+	"""Given a current solution, returns the best solution in its neighborhood. Uses find_successors() which performs a 2-opt exchange to return neighborhood of all possible
+	solutions obtained by reversing some part of the current solution's route."""
 	successors = find_successors(curr_soln, G, all_combs)
 	best_soln = None
 	best_cost = float("inf")
@@ -71,6 +91,7 @@ def find_next_soln(curr_soln, G, all_combs):
 	return best_cost,best_soln
 
 def all_combinations(G):
+	"""Returns all possible pairings of nodes. Used in 2-opt exchange."""
 	all_combos = []
 	n = len(G.nodes()) - 1
 
@@ -80,16 +101,13 @@ def all_combinations(G):
 				all_combos.append((i,j))
 	return all_combos
 
-#given a current solution, returns a list of the neighborhood of the current solution
-#neighborhood is defined as all possible variations of a route where a variation is obtained by reversing part of a route
 def find_successors(curr_soln, G, all_combs):
-	#given a current solution find its "neighbors"
-	#use 2-OPT to find all possible variations of the curr_soln --> find all possible variations of swapping
+	"""Given a current solution, returns a list of the neighborhood of the current solution, where a neighborhood 
+	is defined as all possible variations of a route (variation is obtained by reversing part of a route using 2-opt exchange)."""
 	successors = []
 
 	n = len(G.nodes()) - 1
 	
-	#print all_combs
 	for (i,j) in all_combs:
 		if i<j:
 			new_route = []
@@ -99,52 +117,4 @@ def find_successors(curr_soln, G, all_combs):
 			successors.append(new_route)
 	return successors
 
-#hill climbing with restart 
-#This method calls hillclimb (above) "num_iter" times -- each time the method returns a locally optimal solution. Calling hillclimb multiple times allows us to not only find a local optimum
-#but greatly increases our chances of finding the globally optimal solution. 
-def hctour(G, trfilename, opt_sol, cutoff_time, q, seed):
-	trfile = open(trfilename, 'w')
-	start_time = time.time()
-	num_iter = 50
-	iterations = 0
 
-	best_soln = None
-	best_cost = float("inf")
-
-	#gets all the possible pairs of nodes (1,2),(1,3),...etc -- used in 2-opt exchange
-	all_combs = all_combinations(G)
-	curr_best_sol = best_soln
-	q_yes_no = None
-	#calls hillclimb multiple times to hopefully find optimal solution
-	while iterations < num_iter:
-		#print "hi" + str(iterations)
-		if (time.time()-start_time) >= cutoff_time:
-			return best_soln, best_cost, 'no'
-
-		new_cost,new_soln, q_yes_no = hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, q, seed)
-		#print new_cost
-
-		#trfile.write(str(best_cost)+"hehe")
-
-		#print "almost next iter"
-		#if it finds a better solution than previous solution, reset best solution
-		if best_soln is None:
-			best_soln = new_soln
-			best_cost = new_cost
-			#trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
-		if new_cost < best_cost:
-			best_cost = new_cost
-			best_soln = new_soln
-			#trfile.write(str(time.time() - start_time) + ", " + str(best_cost)+"\n")
-		iterations += 1
-
-		if q_yes_no == 'yes':
-			#print "yes"
-			best_soln.append(best_soln[0])
-			return best_soln, best_cost, q_yes_no
-
-
-	#makes it a cycle
-	best_soln.append(best_soln[0])
-
-	return best_soln, best_cost, q_yes_no
