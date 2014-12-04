@@ -33,5 +33,5 @@ the TSPLIB documentation which is readily available online. There are 6 main fil
 
 	-simulatedAnnealing.py: runs simulated annealing algorithm (local search)
 
-This project makes use of the NetworkX package in Python and as such, to function properly networkx must be installed on the machine to run this code. 
+This project makes use of the NetworkX package in Python and as such, to function properly, networkx must be installed on your machine to run this code. 
 Additional packages required are: INSERT HERE.
