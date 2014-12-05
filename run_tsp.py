@@ -135,7 +135,7 @@ class RunTSP:
 			cost = nn_cost
 		elif algorithm == 'hill_climbing':
 			start_hc = time.time()
-			hc_tour,hc_cost, q_yes_no = hc.hctour(G, trfilename, opt_sol, cutoff_time, random_seed)
+			hc_tour,hc_cost = hc.hctour(G, trfilename, opt_sol, cutoff_time, random_seed)
 			end_hc = (time.time() - start_hc) #in seconds
 			hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
 			tour = hc_tour

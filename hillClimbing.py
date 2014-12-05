@@ -27,7 +27,7 @@ def hctour(G, trfilename, opt_sol, cutoff_time, seed):
 	#calls hillclimb multiple times to find globally optimal solution
 	while iterations < num_iter:
 		if (time.time()-start_time) >= cutoff_time:
-			return best_soln, best_cost, 'no'
+			return best_soln, best_cost
 
 		new_cost,new_soln= hillclimb(G, all_combs, opt_sol, cutoff_time, start_time, trfile, best_cost, seed)
 
