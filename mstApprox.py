@@ -1,4 +1,5 @@
-#MST APPROX ALGORITHM
+#MST APPROXIMATION ALGORITHM
+"""This file performs a MST APPROXIMATION on the given input graph."""
 import itertools
 import time
 import networkx as nx
@@ -6,6 +7,7 @@ from random import randint
 
 #the 'main' function
 def MST_approx_tour(G, trfilename, cutoff_time):
+	"""Runs MST approximation to find the best solution and best cost for a given input graph"""
 	trfile = open(trfilename, 'w')
 	start_time = time.time()
 	T = MST(G)
@@ -14,11 +16,13 @@ def MST_approx_tour(G, trfilename, cutoff_time):
 
 # finds MST of G
 def MST(G):
+	"""Returns a minimum spanning tree for a given input graph"""
 	return nx.minimum_spanning_tree(G)
 
 #finds tour T* on Eularien graph;
 def find_tour(G, oG, start_time, trfile, cutoff_time):
 	#use oG because it must be from the original graph's edge's values
+	"""Returns the best path and cost from a depth first search preorder on a given MST. The weights are found by looking through the original Graph edge weights."""
 	nodes = list(nx.dfs_preorder_nodes(G))
 	p_sol = []
 	tsum = 0
