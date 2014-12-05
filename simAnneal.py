@@ -28,7 +28,6 @@ def simAnneal(G,trfilename, opt_sol, cutoff_time, seed):
 	all_combs = all_node_combos(G)
 	while t > t_end:
 		if (time.time()-start_time) >= cutoff_time:
-			print 'ran out of time'
 			return best_soln, best_cost
 		else:
 			some_neighbor, n_cost = find_some_neighbor(curr_soln, G, all_combs)
