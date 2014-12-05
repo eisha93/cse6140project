@@ -141,16 +141,16 @@ class RunTSP:
 			tour = hc_tour
 			cost = hc_cost
 		elif algorithm == 'simulated_annealing':
-			print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
-			print 'testing' + filename
+			#print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
+			#print 'testing' + filename
 			start_sa = time.time()
 			sa_tour, sa_cost = sa.simAnneal(G, trfilename, opt_sol, cutoff_time, random_seed)
 			end_sa = (time.time() - start_sa) # in seconds
-			print 'time: ' + str(end_sa)
-			print 'length ' + str(sa_cost)
+			#print 'time: ' + str(end_sa)
+			#print 'length ' + str(sa_cost)
 			sa_rel_err = float(abs(sa_cost - opt_sol))/float(opt_sol)
-			print 'err: ' + str(sa_rel_err)
-			print ''
+			#print 'err: ' + str(sa_rel_err)
+			#print ''
 			tour = sa_tour
 			cost = sa_cost
 

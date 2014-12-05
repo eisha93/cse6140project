@@ -17,7 +17,7 @@ def MST(G):
 	return nx.minimum_spanning_tree(G)
 
 #finds tour T* on Eularien graph;
-def find_tour(G, oG, sTime, trfile, cutoff_time):
+def find_tour(G, oG, start_time, trfile, cutoff_time):
 	#use oG because it must be from the original graph's edge's values
 	nodes = list(nx.dfs_preorder_nodes(G))
 	p_sol = []
@@ -29,5 +29,5 @@ def find_tour(G, oG, sTime, trfile, cutoff_time):
 			else:
 				p_sol.append(nodes[i])
 				tsum += oG[nodes[i]][nodes[i+1]]['weight']
-				trfile.write(str(time.time() - sTime) + ', ' + str(tsum) + '\n')
+				trfile.write(str(time.time() - start_time) + ', ' + str(tsum) + '\n')
 	return nodes,tsum
