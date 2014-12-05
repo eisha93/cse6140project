@@ -109,6 +109,8 @@ class RunTSP:
 		tour = G.nodes()
 		cost = float("inf")
 
+		end_time = 0
+
 		#depending on algorithm given, calls appropriate algorithm to calculate solution on input graph
 		if algorithm == 'branch_and_bound':
 			start_bb = time.time()
@@ -119,6 +121,7 @@ class RunTSP:
 			bb_rel_err = float(abs(bb_cost - opt_sol))/float(opt_sol)
 			tour = bb_tour
 			cost = bb_cost
+			#end_time = end_bb
 		elif algorithm == 'mst_approx':
 			start_mst = time.time()
 			mst_tour, mst_cost = mst.MST_approx_tour(G, trfilename, cutoff_time)
@@ -140,6 +143,7 @@ class RunTSP:
 			hc_rel_err = float(abs(hc_cost - opt_sol))/float(opt_sol)
 			tour = hc_tour
 			cost = hc_cost
+			end_time = end_hc
 		elif algorithm == 'simulated_annealing':
 			#print "NOW RUNNING SIMULATED ANNEALING LOCAL SEARCH"
 			#print 'testing' + filename
@@ -153,9 +157,15 @@ class RunTSP:
 			#print ''
 			tour = sa_tour
 			cost = sa_cost
+			end_time = end_sa
 
 		else:
 			print "Please enter a correct algorithm name."
+
+		print str(algorithm) + "_" + str(filename) + "_" + str(random_seed)
+		print "time: " + str(end_time)
+		print "cost: " + str(cost)
+		print "----"
 
 		#writes cost and tour to solution file
 		solfile.write(str(cost)+"\n")

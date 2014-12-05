@@ -1,0 +1,241 @@
+simulated_annealing_burma14.tsp_12
+time: 0.163163900375
+cost: 3770
+----
+simulated_annealing_burma14.tsp_45
+time: 0.167527914047
+cost: 3783
+----
+simulated_annealing_burma14.tsp_23
+time: 0.157701015472
+cost: 3770
+----
+simulated_annealing_burma14.tsp_15
+time: 0.160273075104
+cost: 3783
+----
+simulated_annealing_burma14.tsp_65
+time: 0.159018039703
+cost: 3770
+----
+simulated_annealing_burma14.tsp_135
+time: 0.168297052383
+cost: 3770
+----
+simulated_annealing_burma14.tsp_121
+time: 0.160125017166
+cost: 3783
+----
+simulated_annealing_burma14.tsp_98
+time: 0.160387992859
+cost: 3783
+----
+simulated_annealing_burma14.tsp_47
+time: 0.161118030548
+cost: 3783
+----
+simulated_annealing_burma14.tsp_39
+time: 0.169116973877
+cost: 3783
+----
+simulated_annealing_ulysses16.tsp_12
+time: 0.23939704895
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_45
+time: 0.236242055893
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_23
+time: 0.272603988647
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_15
+time: 0.243111133575
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_65
+time: 0.323618888855
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_135
+time: 0.244876146317
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_121
+time: 0.241101980209
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_98
+time: 0.240547180176
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_47
+time: 0.235265016556
+cost: 7580
+----
+simulated_annealing_ulysses16.tsp_39
+time: 0.253755092621
+cost: 7580
+----
+simulated_annealing_berlin52.tsp_12
+time: 8.19018411636
+cost: 8256.0
+----
+simulated_annealing_berlin52.tsp_45
+time: 8.1712770462
+cost: 8233.0
+----
+simulated_annealing_berlin52.tsp_23
+time: 8.17483997345
+cost: 8245.0
+----
+simulated_annealing_berlin52.tsp_15
+time: 8.10455918312
+cost: 8208.0
+----
+simulated_annealing_berlin52.tsp_65
+time: 8.03448081017
+cost: 8288.0
+----
+simulated_annealing_berlin52.tsp_135
+time: 8.26440310478
+cost: 8349.0
+----
+simulated_annealing_berlin52.tsp_121
+time: 8.17404198647
+cost: 8238.0
+----
+simulated_annealing_berlin52.tsp_98
+time: 7.97717905045
+cost: 8224.0
+----
+simulated_annealing_berlin52.tsp_47
+time: 8.02094602585
+cost: 8181.0
+----
+simulated_annealing_berlin52.tsp_39
+time: 8.02304816246
+cost: 8258.0
+----
+simulated_annealing_kroA100.tsp_12
+time: 57.173126936
+cost: 23898.0
+----
+simulated_annealing_kroA100.tsp_45
+time: 57.7657179832
+cost: 23889.0
+----
+simulated_annealing_kroA100.tsp_23
+time: 55.9165790081
+cost: 24020.0
+----
+simulated_annealing_kroA100.tsp_15
+time: 56.6687810421
+cost: 24985.0
+----
+simulated_annealing_kroA100.tsp_65
+time: 56.5564420223
+cost: 23707.0
+----
+simulated_annealing_kroA100.tsp_135
+time: 56.7121398449
+cost: 23724.0
+----
+simulated_annealing_kroA100.tsp_121
+time: 55.7404980659
+cost: 24285.0
+----
+simulated_annealing_kroA100.tsp_98
+time: 56.816131115
+cost: 24065.0
+----
+simulated_annealing_kroA100.tsp_47
+time: 56.0436179638
+cost: 24575.0
+----
+simulated_annealing_kroA100.tsp_39
+time: 55.8439040184
+cost: 25072.0
+----
+simulated_annealing_ch150.tsp_12
+time: 187.735347986
+cost: 6765.0
+----
+simulated_annealing_ch150.tsp_45
+time: 188.279781103
+cost: 6805.0
+----
+simulated_annealing_ch150.tsp_23
+time: 189.993062973
+cost: 6992.0
+----
+simulated_annealing_ch150.tsp_15
+time: 189.21348381
+cost: 7004.0
+----
+simulated_annealing_ch150.tsp_65
+time: 195.49673605
+cost: 6805.0
+----
+simulated_annealing_ch150.tsp_135
+time: 187.566681147
+cost: 6877.0
+----
+simulated_annealing_ch150.tsp_121
+time: 188.624571085
+cost: 7030.0
+----
+simulated_annealing_ch150.tsp_98
+time: 187.058785915
+cost: 6922.0
+----
+simulated_annealing_ch150.tsp_47
+time: 187.564280987
+cost: 7128.0
+----
+simulated_annealing_ch150.tsp_39
+time: 186.028795004
+cost: 7065.0
+----
+ran out of time
+simulated_annealing_gr202.tsp_12
+time: 601.262522936
+cost: 46738
+----
+simulated_annealing_gr202.tsp_45
+time: 602.371587038
+cost: 45696
+----
+simulated_annealing_gr202.tsp_23
+time: 454.020272017
+cost: 46182
+----
+simulated_annealing_gr202.tsp_15
+time: 453.542642117
+cost: 46539
+----
+simulated_annealing_gr202.tsp_65
+time: 450.807658911
+cost: 45803
+----
+simulated_annealing_gr202.tsp_135
+time: 441.942214966
+cost: 46075
+----
+simulated_annealing_gr202.tsp_121
+time: 442.598796129
+cost: 45503
+----
+simulated_annealing_gr202.tsp_98
+time: 429.987341881
+cost: 45947
+----
+simulated_annealing_gr202.tsp_47
+time: 438.51493907
+cost: 45630
+----
+simulated_annealing_gr202.tsp_39
+time: 435.964725018
+cost: 46569
+----

@@ -1,0 +1,216 @@
+hill_climbing_burma14.tsp_12
+time: 0.596018075943
+cost: 3381
+----
+hill_climbing_burma14.tsp_45
+time: 0.563399076462
+cost: 3336
+----
+hill_climbing_burma14.tsp_23
+time: 0.562821149826
+cost: 3323
+----
+hill_climbing_burma14.tsp_15
+time: 0.598369836807
+cost: 3336
+----
+hill_climbing_burma14.tsp_65
+time: 0.59846496582
+cost: 3323
+----
+hill_climbing_burma14.tsp_135
+time: 0.581805944443
+cost: 3336
+----
+hill_climbing_burma14.tsp_121
+time: 0.576175928116
+cost: 3346
+----
+hill_climbing_burma14.tsp_98
+time: 0.603655099869
+cost: 3323
+----
+hill_climbing_burma14.tsp_47
+time: 0.566107034683
+cost: 3381
+----
+hill_climbing_burma14.tsp_39
+time: 0.568948030472
+cost: 3386
+----
+hill_climbing_ulysses16.tsp_12
+time: 1.07806110382
+cost: 6915
+----
+hill_climbing_ulysses16.tsp_45
+time: 1.10316586494
+cost: 6912
+----
+hill_climbing_ulysses16.tsp_23
+time: 1.19846105576
+cost: 6870
+----
+hill_climbing_ulysses16.tsp_15
+time: 1.12215185165
+cost: 6900
+----
+hill_climbing_ulysses16.tsp_65
+time: 1.07593083382
+cost: 6930
+----
+hill_climbing_ulysses16.tsp_135
+time: 1.05737996101
+cost: 6909
+----
+hill_climbing_ulysses16.tsp_121
+time: 1.03683400154
+cost: 6875
+----
+hill_climbing_ulysses16.tsp_98
+time: 1.05457305908
+cost: 6895
+----
+hill_climbing_ulysses16.tsp_47
+time: 1.06011986732
+cost: 6944
+----
+hill_climbing_ulysses16.tsp_39
+time: 1.05855703354
+cost: 6951
+----
+hill_climbing_berlin52.tsp_12
+time: 165.879874945
+cost: 7834.0
+----
+hill_climbing_berlin52.tsp_45
+time: 164.108738899
+cost: 7943.0
+----
+hill_climbing_berlin52.tsp_23
+time: 163.326910019
+cost: 7829.0
+----
+hill_climbing_berlin52.tsp_15
+time: 167.958473921
+cost: 8133.0
+----
+hill_climbing_berlin52.tsp_65
+time: 167.780900002
+cost: 7998.0
+----
+hill_climbing_berlin52.tsp_135
+time: 168.228419065
+cost: 7910.0
+----
+hill_climbing_berlin52.tsp_121
+time: 162.13125205
+cost: 8263.0
+----
+hill_climbing_berlin52.tsp_98
+time: 171.939344168
+cost: 7988.0
+----
+hill_climbing_berlin52.tsp_47
+time: 168.707091808
+cost: 8128.0
+----
+hill_climbing_berlin52.tsp_39
+time: 169.836776018
+cost: 8204.0
+----
+hill_climbing_kroA100.tsp_12
+time: 600.371841908
+cost: 23826.0
+----
+hill_climbing_kroA100.tsp_45
+time: 600.252159119
+cost: 23911.0
+----
+hill_climbing_kroA100.tsp_23
+time: 600.351052999
+cost: 23593.0
+----
+hill_climbing_kroA100.tsp_15
+time: 600.229108095
+cost: 22389.0
+----
+hill_climbing_kroA100.tsp_65
+time: 600.10956502
+cost: 23172.0
+----
+hill_climbing_kroA100.tsp_135
+time: 600.291967869
+cost: 25278.0
+----
+hill_climbing_kroA100.tsp_121
+time: 600.375864029
+cost: 23096.0
+----
+hill_climbing_kroA100.tsp_98
+time: 600.015573978
+cost: 24123.0
+----
+hill_climbing_kroA100.tsp_47
+time: 600.441568851
+cost: 23173.0
+----
+hill_climbing_ch150.tsp_12
+time: 601.250734806
+cost: 7753.0
+----
+hill_climbing_ch150.tsp_45
+time: 600.735857964
+cost: 7494.0
+----
+hill_climbing_ch150.tsp_23
+time: 600.937628984
+cost: 7594.0
+----
+hill_climbing_ch150.tsp_15
+time: 601.711160183
+cost: 7271.0
+----
+hill_climbing_ch150.tsp_65
+time: 601.274664879
+cost: 7535.0
+----
+hill_climbing_ch150.tsp_135
+time: 601.005445957
+cost: 7593.0
+----
+hill_climbing_ch150.tsp_121
+time: 600.89055109
+cost: 7321.0
+----
+hill_climbing_ch150.tsp_98
+time: 601.57504797
+cost: 7246.0
+----
+hill_climbing_ch150.tsp_47
+time: 600.278868914
+cost: 8148.0
+----
+hill_climbing_ch150.tsp_39
+time: 600.112261057
+cost: 7749.0
+----
+hill_climbing_gr202.tsp_12
+time: 602.343677998
+cost: 55465
+----
+hill_climbing_gr202.tsp_45
+time: 601.923424959
+cost: 50651
+----
+hill_climbing_gr202.tsp_23
+time: 600.875828028
+cost: 56956
+----
+hill_climbing_gr202.tsp_15
+time: 603.082914829
+cost: 55762
+----
+hill_climbing_gr202.tsp_65
+time: 602.416041136
+cost: 54702
+----
